@@ -194,8 +194,7 @@ var _vanish_material := preload("res://addons/libsm64_godot/libsm64_mario/libsm6
 var _metal_material := preload("res://addons/libsm64_godot/libsm64_mario/libsm64_mario_metal_material.tres") as StandardMaterial3D
 var _wing_material := preload("res://addons/libsm64_godot/libsm64_mario/libsm64_mario_wing_material.tres") as StandardMaterial3D
 
-var _time_since_last_tick := 0.0
-var _last_tick_usec := Time.get_ticks_usec()
+var _physics_time_since_last_tick := 0.0
 var _reset_interpolation_next_tick := false
 
 var _cam_rotation := 0.0
@@ -357,7 +356,7 @@ func _process(delta: float) -> void:
 	if gravity_add != 0:
 		velocity += Vector3(0, gravity_add * delta, 0)
 
-	var lerp_t = (Time.get_ticks_usec() - _last_tick_usec) / (LibSM64.tick_delta_time * 1000000.0)
+	var lerp_t := _calculate_lerp_t()
 
 	var mario_state: LibSM64MarioState
 	if interpolate:
@@ -437,18 +436,24 @@ func _process(delta: float) -> void:
 	#DebugDraw3D.draw_sphere(position, 0.1, Color(1, 1, 1), delta)
 
 
-func _physics_process(delta):
+func _calculate_lerp_t() -> float:
+	var sm64_ticks_per_physics_tick := Engine.physics_ticks_per_second * LibSM64.tick_delta_time
+	var sm64_tick_fraction := _physics_time_since_last_tick / LibSM64.tick_delta_time
+	var physics_fraction := Engine.get_physics_interpolation_fraction() / sm64_ticks_per_physics_tick
+	return sm64_tick_fraction + physics_fraction
+
+
+func _physics_process(delta: float) -> void:
 	if _id < 0:
 		return
 
 	if _paused:
 		return
 
-	_time_since_last_tick += delta
-	while _time_since_last_tick >= LibSM64.tick_delta_time:
+	_physics_time_since_last_tick += delta
+	while _physics_time_since_last_tick >= LibSM64.tick_delta_time:
 		_tick()
-		_last_tick_usec = Time.get_ticks_usec()
-		_time_since_last_tick -= LibSM64.tick_delta_time
+		_physics_time_since_last_tick -= LibSM64.tick_delta_time
 
 		# Update the members that aren't interpolated
 		_health = _mario_interpolator.mario_state_current.health;
