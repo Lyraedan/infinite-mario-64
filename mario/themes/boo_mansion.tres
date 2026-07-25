@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="LevelTheme" format=3 uid="uid://b8pvs0edk22eu"]
+
+[ext_resource type="Script" uid="uid://b8u3eythntdnv" path="res://mario/level_theme.gd" id="1_c76x8"]
+
+[sub_resource type="Gradient" id="Gradient_271dg"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 0.85, 1)
+colors = PackedColorArray(0.5, 0.5, 0.5, 1, 0.6, 0.6, 0.6, 1, 0.7, 0.7, 0.7, 1, 0.8, 0.8, 0.8, 1, 0.85, 0.85, 0.85, 1, 0.9, 0.9, 0.9, 1)
+
+[resource]
+script = ExtResource("1_c76x8")
+theme_id = 5
+theme_name = "Boo Mansion"
+display_name = "Big Boos Mansion"
+block_color_gradient = SubResource("Gradient_271dg")
+fog_color = Color(0.16701236, 7.9548096e-05, 0.21071029, 1)
+ambient_color = Color(0.25852236, 3.151361e-05, 0.24559134, 1)
+light_color = Color(0.34479606, 1.5931279e-05, 0.2784031, 1)
+background_music_path = "res://streamingassets/sm64_music/1-12 Haunted House.mp3"

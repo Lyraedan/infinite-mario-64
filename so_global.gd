@@ -45,6 +45,9 @@ const THEME_PATHS: Array[String] = [
 	"res://mario/themes/thwomp_fortress.tres",
 	"res://mario/themes/snow_land.tres",
 	"res://mario/themes/lava_fire_sea.tres",
+	"res://mario/themes/boo_mansion.tres",
+	"res://mario/themes/dire_dire_docks.tres",
+	"res://mario/themes/inside_castle.tres"
 ]
 
 func play_sound(inSound, volume : float = 0, pitch : float = 1) -> void:
@@ -264,6 +267,36 @@ func _generate_theme_textures() -> void:
 			"slope": "%s/course_07_lethal_lava_land/tex_37_309_32x32.png" % ST,
 			"background": "%s/tex_262_262_256x165.png" % BG,
 		},
+		LevelTheme.ThemeID.DIRE_DIRE_DOCKS: {
+			"albedo": "%s/course_03_jolly_roger_bay/tex_171_72_64x32.png" % ST,
+			"side": "%s/course_03_jolly_roger_bay/tex_173_55_62x15.png" % ST,
+			"slope": "%s/course_03_jolly_roger_bay/tex_3_140_32x32.png" % ST,
+			"background": "%s/tex_3_521_256x256.png" % BG,
+		},
+		LevelTheme.ThemeID.BOO_MANSION: {
+			"albedo": "%s/course_05_big_boo_haunt/tex_37_136_32x32.png" % ST,
+			"side": "%s/course_05_big_boo_haunt/tex_139_72_32x43.png" % ST,
+			"slope": "%s/course_05_big_boo_haunt/tex_207_104_32x63.png" % ST,
+			"background": "%s/tex_780_267_256x134.png" % BG,
+		},
+		LevelTheme.ThemeID.INSIDE_CASTLE: {
+			"albedo": "%s/peach_castle_1st_floor/tex_3_138_32x32.png" % ST,
+			"side": "%s/peach_castle_1st_floor/tex_71_138_32x32.png" % ST,
+			"slope": "%s/peach_castle_1st_floor/tex_201_240_32x32.png" % ST,
+			"background": "%s/tex_3_3_256x256.png" % BG,
+		},
+		LevelTheme.ThemeID.OUTSIDE_CASTLE: {
+			"albedo": "%s/course_05_big_boo_haunt/tex_37_136_32x32.png" % ST,
+			"side": "%s/course_05_big_boo_haunt/tex_139_72_32x43.png" % ST,
+			"slope": "%s/course_05_big_boo_haunt/tex_207_104_32x63.png" % ST,
+			"background": "%s/tex_780_267_256x134.png" % BG,
+		},
+		LevelTheme.ThemeID.OUTSIDE_CASTLE_BACK: {
+			"albedo": "%s/course_05_big_boo_haunt/tex_37_136_32x32.png" % ST,
+			"side": "%s/course_05_big_boo_haunt/tex_139_72_32x43.png" % ST,
+			"slope": "%s/course_05_big_boo_haunt/tex_207_104_32x63.png" % ST,
+			"background": "%s/tex_780_267_256x134.png" % BG,
+		}
 	}
 
 	for theme_id in theme_data:

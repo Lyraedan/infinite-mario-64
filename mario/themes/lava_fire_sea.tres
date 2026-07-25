@@ -1,6 +1,6 @@
-[gd_resource type="Resource" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="LevelTheme" format=3 uid="uid://1cdk31v75wef"]
 
-[ext_resource type="Script" path="res://mario/level_theme.gd" id="1_c76x8"]
+[ext_resource type="Script" uid="uid://b8u3eythntdnv" path="res://mario/level_theme.gd" id="1_c76x8"]
 
 [sub_resource type="Gradient" id="Gradient_block"]
 offsets = PackedFloat32Array(0, 0.15, 0.3, 0.5, 0.7, 0.85, 1)
@@ -17,7 +17,6 @@ colors = PackedColorArray(0.1, 0.02, 0.01, 1, 0.4, 0.12, 0.03, 1, 0.7, 0.25, 0.0
 [resource]
 script = ExtResource("1_c76x8")
 theme_id = 4
-background_music_path = "res://streamingassets/sm64_music/1-10 Lethal Lava Land.mp3"
 theme_name = "LavaFireSea"
 display_name = "Lava Fire Sea"
 block_color_gradient = SubResource("Gradient_block")
@@ -26,11 +25,11 @@ sky_color_ramp = SubResource("Gradient_skyramp")
 fog_density = 0.006
 fog_color = Color(0.6, 0.2, 0.05, 1)
 ambient_color = Color(0.4, 0.12, 0.04, 1)
-light_color = Color(1.0, 0.7, 0.3, 1)
+light_color = Color(1, 0.7, 0.3, 1)
 light_euler = Vector3(-15, 60, 0)
-death_plane_color = Color(1.0, 0.1, 0.0, 1)
-coin_tint = Color(1.0, 0.7, 0.2, 1)
-default_surface_type = 0
+death_plane_color = Color(1, 0.1, 0, 1)
+background_music_path = "res://streamingassets/sm64_music/1-10 Lethal Lava Land.mp3"
+coin_tint = Color(1, 0.7, 0.2, 1)
 iter_min = 22
 iter_max = 50
 block_width_min = 5

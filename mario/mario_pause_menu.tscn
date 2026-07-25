@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bdc07kwcxglgb"]
 
-[ext_resource type="Script" uid="uid://4p8tnqi81m5p" path="res://mario/mario_pause_menu.gd" id="1_muu6i"]
+[ext_resource type="Script" path="res://mario/mario_pause_menu.gd" id="1_muu6i"]
 [ext_resource type="FontFile" uid="uid://c25d003g01x4h" path="res://mario/Mario64.ttf" id="1_mvtme"]
 [ext_resource type="AudioStream" uid="uid://vuyuw4rpqy3a" path="res://mario/sfx/sm64_pause.wav" id="2_28vdd"]
 
