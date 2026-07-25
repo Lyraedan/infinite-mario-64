@@ -208,6 +208,24 @@ anchor_left = 0.312
 anchor_top = 0.68
 anchor_right = 0.687
 anchor_bottom = 0.717
+
+[node name="ThemeLabel" type="Label" parent="GeneratePrompt"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0
+anchor_top = 1.05
+anchor_right = 1.0
+anchor_bottom = 1.35
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_mvtme")
+theme_override_font_sizes/font_size = 20
+text = "Theme: Infinite Mario 64"
+horizontal_alignment = 1
 offset_left = 1.27997
 offset_top = -0.160034
 offset_right = 1.27991

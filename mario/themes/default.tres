@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://mario/level_theme.gd" id="1_c76x8"]
+
+[resource]
+script = ExtResource("1_c76x8")
+theme_id = 0
+theme_name = "Default"
+display_name = "Infinite Mario 64"
+fog_density = -1.0
+default_surface_type = 0

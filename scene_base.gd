@@ -6,6 +6,7 @@ extends Node3D
 @onready var mesh_instance_3d = $MeshInstance3D
 @onready var start_displ = $StartDispl
 @onready var world_environment := $WorldEnvironment as WorldEnvironment
+@onready var directional_light := $DirectionalLight3D as DirectionalLight3D
 
 
 func _process(delta):
@@ -56,21 +57,24 @@ func _generate_random_level(useSeed) -> void:
 	cork_random.seed = apple_seed.randi()
 
 	var block_colors := Gradient.new()
-	var color_count : int = environment_random.randi_range(3, 12)
-	var avg_dist : float = 1.0 / color_count
-	for i in range(color_count - 1):
+	var use_theme_gradient: bool = SOGlobal.current_theme and SOGlobal.current_theme.block_color_gradient != null
+	if use_theme_gradient:
+		block_colors = SOGlobal.current_theme.block_color_gradient
+	else:
+		var color_count : int = environment_random.randi_range(3, 12)
+		var avg_dist : float = 1.0 / color_count
+		for i in range(color_count - 1):
+			var hue : float = environment_random.randf_range(0, 1)
+			var saturation : float = environment_random.randf_range(0.3, 1)
+			var value : float = environment_random.randf_range(0.3, 1)
+			var color_offset : float = avg_dist * 0.5 * environment_random.randf_range(-1, 1)
+			var final_point_pos : float = float(i + 1) * avg_dist + color_offset
+			block_colors.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
 		var hue : float = environment_random.randf_range(0, 1)
 		var saturation : float = environment_random.randf_range(0.3, 1)
 		var value : float = environment_random.randf_range(0.3, 1)
-		var color_offset : float = avg_dist * 0.5 * environment_random.randf_range(-1, 1)
-		var final_point_pos : float = float(i + 1) * avg_dist + color_offset
-		block_colors.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
-	var hue : float = environment_random.randf_range(0, 1)
-	var saturation : float = environment_random.randf_range(0.3, 1)
-	var value : float = environment_random.randf_range(0.3, 1)
-	block_colors.add_point(0, Color.from_hsv(hue, saturation, value))
-	block_colors.add_point(0.999, Color.from_hsv(hue, saturation, value))
-
+		block_colors.add_point(0, Color.from_hsv(hue, saturation, value))
+		block_colors.add_point(0.999, Color.from_hsv(hue, saturation, value))
 
 	var new_gradient_texture : GradientTexture2D = GradientTexture2D.new()
 	new_gradient_texture.width = 256
@@ -92,6 +96,16 @@ func _generate_random_level(useSeed) -> void:
 	var max_block_width = root_random.randf_range(8, 24)
 	var max_block_length = root_random.randf_range(8, 24)
 	var max_block_height = root_random.randf_range(8, 20)
+	var block_theme := SOGlobal.current_theme
+	if block_theme:
+		var bw_min: float = block_theme.block_width_min if block_theme.block_width_min >= 0 else 4
+		var bw_max: float = block_theme.block_width_max if block_theme.block_width_max >= 0 else 24
+		var bl_min: float = block_theme.block_length_min if block_theme.block_length_min >= 0 else 4
+		var bl_max: float = block_theme.block_length_max if block_theme.block_length_max >= 0 else 24
+		var bh_max: float = block_theme.block_height_max if block_theme.block_height_max >= 0 else 20
+		max_block_width = root_random.randf_range(bw_min, bw_max)
+		max_block_length = root_random.randf_range(bl_min, bl_max)
+		max_block_height = root_random.randf_range(5.0, max(bh_max, 5.0))
 	var block_height_bias = pow(root_random.randf_range(2, 3.5), 1.4)
 	var min_vert_vel_change = root_random.randf_range(-0.2, 0.1)
 	var max_vert_vel_change = root_random.randf_range(0.1, 0.4)
@@ -112,20 +126,37 @@ func _generate_random_level(useSeed) -> void:
 	var min_angle_velocity_change_reduction = root_random.randf_range(0.65, 0.72)
 	var max_angle_velocity_change_reduction = root_random.randf_range(0.72, 0.85)
 
-	var iter : int = root_random.randi_range(25, 65)
+	var theme := SOGlobal.current_theme
+	var iter_min_val: int = 25
+	var iter_max_val: int = 65
+	if theme and theme.iter_min >= 0:
+		iter_min_val = theme.iter_min
+	if theme and theme.iter_max >= 0:
+		iter_max_val = theme.iter_max
+	var iter : int = root_random.randi_range(iter_min_val, iter_max_val)
+
 	var pillar_chance = root_random.randf_range(0.025, 0.05)
+	if theme and theme.pillar_chance >= 0:
+		pillar_chance = theme.pillar_chance
 
 	var north_slope_chance = root_random.randf_range(0.0, 0.6)
 	var east_slope_chance = root_random.randf_range(0.0, 0.6)
 	var south_slope_chance = root_random.randf_range(0.0, 0.6)
 	var west_slope_chance = root_random.randf_range(0.0, 0.6)
-	var max_north_slope = root_random.randi_range(1, 6)
-	var max_east_slope = root_random.randi_range(1, 6)
-	var max_south_slope = root_random.randi_range(1, 6)
-	var max_west_slope = root_random.randi_range(1, 6)
+	if theme:
+		if theme.slope_chance_north >= 0: north_slope_chance = theme.slope_chance_north
+		if theme.slope_chance_east >= 0: east_slope_chance = theme.slope_chance_east
+		if theme.slope_chance_south >= 0: south_slope_chance = theme.slope_chance_south
+		if theme.slope_chance_west >= 0: west_slope_chance = theme.slope_chance_west
+	var max_slope_val: int = 6
+	if theme and theme.max_slope >= 0:
+		max_slope_val = theme.max_slope
+	var max_north_slope = root_random.randi_range(1, max(max_slope_val, 1))
+	var max_east_slope = root_random.randi_range(1, max(max_slope_val, 1))
+	var max_south_slope = root_random.randi_range(1, max(max_slope_val, 1))
+	var max_west_slope = root_random.randi_range(1, max(max_slope_val, 1))
 	var should_generate_cork_star : bool = root_random.randf() > 0.8
 	var corks : Array[CorkBox] = []
-	#var iter : int = root_random.randi_range(5, 10)
 	for i in range(iter):
 		level_root_position_table.append(level_gen_source)
 		level_gen_source_velocity += root_random_iterational.randf_range(min_velocity_change, max_velocity_change)
@@ -410,12 +441,20 @@ func _generate_random_level(useSeed) -> void:
 		level_gen_source += Vector3(0, vertical_vel, level_gen_source_velocity).rotated(Vector3(0, 1, 0), deg_to_rad(ang_deg))
 
 	await get_tree().create_timer(0.02).timeout
+	var coin_density_mult: float = 1.0
+	if theme and theme.coin_density_mult >= 0:
+		coin_density_mult = theme.coin_density_mult
+	var coin_spawn_chance_filter: float = 1.0
+	if coin_density_mult < 1.0:
+		coin_spawn_chance_filter = coin_density_mult
 	var num_coins_spawned = 0
 	var coin_cast : RayCast3D = RayCast3D.new()
 	coin_cast.set_collision_mask_value(1, true)
 	SOGlobal.add_child(coin_cast)
 	for mesh:LevelBlock in SOGlobal.level_meshes:
 		if mesh.coin_surface == LevelBlock.coin_spawn_type.BOX:
+			if coin_density_mult < 1.0 and coin_random.randf() > coin_density_mult:
+				continue
 			var cur_box_size : Vector3 = mesh.block_size
 			var cur_box_halfsize : Vector3 = cur_box_size * 0.5
 			var cur_box_pos : Vector3 = mesh.position
@@ -509,6 +548,21 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 
 	SOGlobal.current_seed = useSeed
 
+	var parsed_seed: String = useSeed
+	SOGlobal.theme_override_index = -1
+	if ":" in useSeed:
+		var parts: PackedStringArray = useSeed.split(":", true, 2)
+		parsed_seed = parts[0]
+		if parts.size() > 1:
+			var theme_name_override: String = parts[1].strip_edges()
+			for i in SOGlobal.theme_list.size():
+				if theme_name_override.to_lower() == SOGlobal.theme_list[i].theme_name.to_lower():
+					SOGlobal.theme_override_index = i
+					break
+
+	SOGlobal.current_theme = SOGlobal.get_theme_for_seed(parsed_seed)
+	useSeed = parsed_seed
+
 	LibSM64.scale_factor = 110.0
 
 	SOGlobal.total_coins = 0
@@ -531,6 +585,13 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 
 	_is_libsm64_init = LibSM64Global.init()
 
+	var theme := SOGlobal.current_theme
+	if theme:
+		var texs = SOGlobal.theme_textures_cache.get(theme.theme_id)
+		if texs:
+			SOGlobal.block_material.set_shader_parameter("texture_albedo", texs["albedo"])
+			SOGlobal.block_material.set_shader_parameter("slope_texture_albedo", texs["slope"])
+
 	_generate_random_level(useSeed)
 
 	await get_tree().create_timer(0.2).timeout
@@ -549,6 +610,16 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 	sm_64_mario.preview_cam_pan_yaw = 0
 	sm_64_mario.ready_to_play = false
 
+	if theme:
+		var death_mat: ShaderMaterial = mesh_instance_3d.get_active_material(0) as ShaderMaterial
+		if death_mat:
+			death_mat.set_shader_parameter("death_color", theme.death_plane_color)
+		world_environment.environment.fog_density = max(theme.fog_density, 0.0) if theme.fog_density >= 0 else world_environment.environment.fog_density
+		world_environment.environment.fog_light_color = theme.fog_color
+		world_environment.environment.ambient_light_color = theme.ambient_color
+		directional_light.light_color = theme.light_color
+		directional_light.rotation_degrees = theme.light_euler
+
 	if ProjectSettings.get_setting("display/window/size/transparent") == true:
 		world_environment.environment.sky.sky_material = null
 		return
@@ -557,38 +628,44 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 	sky_random.seed = hash(useSeed)
 
 	var sky_colors := Gradient.new()
-	var color_count : int = sky_random.randi_range(3, 12)
-	var avg_dist : float = 1.0 / color_count
-	for i in range(color_count - 1):
+	var use_sky_gradient: bool = theme and theme.sky_color_gradient != null
+	if use_sky_gradient:
+		sky_colors = theme.sky_color_gradient
+	else:
+		var color_count : int = sky_random.randi_range(3, 12)
+		var avg_dist : float = 1.0 / color_count
+		for i in range(color_count - 1):
+			var hue : float = sky_random.randf_range(0, 1)
+			var saturation : float = sky_random.randf_range(0.16, 0.75)
+			var value : float = sky_random.randf_range(0.15, 0.6)
+			var color_offset : float = avg_dist * 0.5 * sky_random.randf_range(-1, 1)
+			var final_point_pos : float = float(i + 1) * avg_dist + color_offset
+			sky_colors.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
 		var hue : float = sky_random.randf_range(0, 1)
-		var saturation : float = sky_random.randf_range(0.16, 0.75)
-		var value : float = sky_random.randf_range(0.15, 0.6)
-		var color_offset : float = avg_dist * 0.5 * sky_random.randf_range(-1, 1)
-		var final_point_pos : float = float(i + 1) * avg_dist + color_offset
-		sky_colors.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
-	var hue : float = sky_random.randf_range(0, 1)
-	var saturation : float = sky_random.randf_range(0.3, 1)
-	var value : float = sky_random.randf_range(0.3, 1)
-	sky_colors.add_point(0, Color.from_hsv(hue, saturation, value))
-	sky_colors.add_point(0.999, Color.from_hsv(hue, saturation, value))
+		var saturation : float = sky_random.randf_range(0.3, 1)
+		var value : float = sky_random.randf_range(0.3, 1)
+		sky_colors.add_point(0, Color.from_hsv(hue, saturation, value))
+		sky_colors.add_point(0.999, Color.from_hsv(hue, saturation, value))
 
 	var sky_ramp := Gradient.new()
-	color_count = sky_random.randi_range(3, 12)
-	avg_dist = 1.0 / color_count
-	for i in range(color_count - 1):
-		hue = sky_random.randf_range(0, 1)
-		saturation = sky_random.randf_range(0.2, 0.75)
-		value = sky_random.randf_range(0.2, 0.6)
-		var color_offset : float = avg_dist * 0.5 * sky_random.randf_range(-1, 1)
-		var final_point_pos : float = lerp(float(i + 1) * avg_dist + color_offset, 0.75, 0.5)
-		sky_ramp.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
-	hue = sky_random.randf_range(0, 1)
-	saturation = sky_random.randf_range(0.6, 1)
-	value = sky_random.randf_range(0.01, 0.05)
-	sky_ramp.add_point(0, Color.from_hsv(hue, saturation, value))
-	sky_ramp.add_point(0.999, Color.from_hsv(hue, saturation, value))
-
-
+	var use_sky_ramp: bool = theme and theme.sky_color_ramp != null
+	if use_sky_ramp:
+		sky_ramp = theme.sky_color_ramp
+	else:
+		var color_count : int = sky_random.randi_range(3, 12)
+		var avg_dist : float = 1.0 / color_count
+		for i in range(color_count - 1):
+			var hue : float = sky_random.randf_range(0, 1)
+			var saturation : float = sky_random.randf_range(0.2, 0.75)
+			var value : float = sky_random.randf_range(0.2, 0.6)
+			var color_offset : float = avg_dist * 0.5 * sky_random.randf_range(-1, 1)
+			var final_point_pos : float = lerp(float(i + 1) * avg_dist + color_offset, 0.75, 0.5)
+			sky_ramp.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
+		var hue : float = sky_random.randf_range(0, 1)
+		var saturation : float = sky_random.randf_range(0.6, 1)
+		var value : float = sky_random.randf_range(0.01, 0.05)
+		sky_ramp.add_point(0, Color.from_hsv(hue, saturation, value))
+		sky_ramp.add_point(0.999, Color.from_hsv(hue, saturation, value))
 
 	var sky_gradient_texture : GradientTexture2D = GradientTexture2D.new()
 	sky_gradient_texture.width = 256
@@ -615,9 +692,12 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 
 	var sky_noise_texture := NoiseTexture2D.new()
 	sky_noise_texture.seamless = true
-	sky_noise_texture.color_ramp = sky_colors
+	if use_sky_gradient:
+		sky_noise_texture.color_ramp = sky_colors
 	var sky_noise := FastNoiseLite.new()
 	sky_noise.seed = sky_random.randi()
+	if theme:
+		sky_noise.seed += theme.sky_noise_seed_offset
 	sky_noise.noise_type = sky_random.randi_range(0, 5)
 	sky_noise.fractal_type = sky_random.randi_range(0, 3)
 	sky_noise.cellular_return_type = sky_random.randi_range(0, 6)
@@ -641,7 +721,8 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 	sky_noise_texture.noise = sky_noise
 	await sky_noise_texture.changed
 	SOGlobal.sky_material.set_shader_parameter("sky_texture", sky_noise_texture)
-	world_environment.environment.fog_density = sky_random.randf_range(0.0005, 0.01)
+	if !theme or theme.fog_density < 0:
+		world_environment.environment.fog_density = sky_random.randf_range(0.0005, 0.01)
 	if SOGlobal.compat_renderer:
 		world_environment.environment.fog_light_energy *= 0.25
 

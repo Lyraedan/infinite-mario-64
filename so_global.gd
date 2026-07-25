@@ -6,6 +6,8 @@ var level_start_time : int = 0
 var current_mario : LibSM64Mario
 var current_level_manager
 var current_seed : String
+var current_theme : LevelTheme
+var theme_override_index : int = -1
 var block_material : ShaderMaterial
 var sky_material := preload("res://mario/sky_material.tres") as ShaderMaterial
 var global_sound := AudioStreamPlayer.new() as AudioStreamPlayer
@@ -20,6 +22,17 @@ var inner_deadzone : float = 0.05
 var outer_deadzone : float = 0.95
 var flip_x : bool = true
 var compat_renderer : bool = ProjectSettings.get_setting("rendering/renderer/rendering_method") == "gl_compatibility"
+
+var theme_list: Array[LevelTheme] = []
+var theme_textures_cache: Dictionary = {}
+
+const THEME_PATHS: Array[String] = [
+	"res://mario/themes/default.tres",
+	"res://mario/themes/bobomb_battlefield.tres",
+	"res://mario/themes/thwomp_fortress.tres",
+	"res://mario/themes/snow_land.tres",
+	"res://mario/themes/lava_fire_sea.tres",
+]
 
 func play_sound(inSound, volume : float = 0, pitch : float = 1) -> void:
 	var playback : AudioStreamPlaybackPolyphonic = global_sound.get_stream_playback()
@@ -104,7 +117,7 @@ func generate_block_from_pos_and_size(inPos : Vector3, inSize : Vector3, north_s
 	add_child(new_block)
 	var surface_properties := LibSM64SurfacePropertiesComponent.new()
 	surface_properties.surface_properties = LibSM64SurfaceProperties.new()
-	surface_properties.surface_properties.surface_type = LibSM64.SURFACE_DEFAULT
+	surface_properties.surface_properties.surface_type = current_theme.default_surface_type if current_theme else LibSM64.SURFACE_DEFAULT
 	new_block.add_child(surface_properties)
 	new_block.set_instance_shader_parameter("fade_in", (float(Time.get_ticks_msec()) / 1000) + float(level_meshes.size()) * 0.01 + 0.2)
 	new_block.set_instance_shader_parameter("spawn_dir", Vector3(randf_range(-1, 1), randf_range(-1, 1), randf_range(-1, 1)))
@@ -144,7 +157,7 @@ func generate_cylinder(inPos : Vector3, in_height : float, in_radius_bot : float
 	new_block.material_override = block_material
 	var surface_properties := LibSM64SurfacePropertiesComponent.new()
 	surface_properties.surface_properties = LibSM64SurfaceProperties.new()
-	surface_properties.surface_properties.surface_type = LibSM64.SURFACE_DEFAULT
+	surface_properties.surface_properties.surface_type = current_theme.default_surface_type if current_theme else LibSM64.SURFACE_DEFAULT
 	new_block.current_move_type = move_mode
 	if in_parent != SOGlobal:
 		new_block.movement_parent = in_parent
@@ -172,6 +185,45 @@ func generate_cylinder(inPos : Vector3, in_height : float, in_radius_bot : float
 	level_meshes.append(new_block)
 	return new_block
 
+func get_theme_for_seed(seed: String) -> LevelTheme:
+	if theme_override_index >= 0 and theme_override_index < theme_list.size():
+		return theme_list[theme_override_index]
+	if theme_list.is_empty():
+		load_themes()
+	if theme_list.is_empty():
+		return null
+	var index: int = abs(hash(seed)) % theme_list.size()
+	return theme_list[index]
+
+func load_themes() -> void:
+	theme_list.clear()
+	for path in THEME_PATHS:
+		var theme := load(path) as LevelTheme
+		if theme:
+			theme_list.append(theme)
+
+func _generate_theme_textures() -> void:
+	theme_textures_cache.clear()
+
+	var theme_names: Dictionary = {
+		LevelTheme.ThemeID.DEFAULT: "default",
+		LevelTheme.ThemeID.BOBOMB_BATTLEFIELD: "bobomb",
+		LevelTheme.ThemeID.THWOMP_FORTRESS: "thwomp",
+		LevelTheme.ThemeID.SNOW_LAND: "snow",
+		LevelTheme.ThemeID.LAVA_FIRE_SEA: "lava",
+	}
+
+	for theme_id in theme_names:
+		var name: String = theme_names[theme_id]
+		var albedo_tex: Texture2D = load("res://mario/theme_textures/%s_albedo.png" % name)
+		var slope_tex: Texture2D = load("res://mario/theme_textures/%s_slope.png" % name)
+		if not albedo_tex:
+			albedo_tex = load("res://mario/debug_floor.png")
+		if not slope_tex:
+			slope_tex = load("res://mario/debug_floor_slope.png")
+		theme_textures_cache[theme_id] = { "albedo": albedo_tex, "slope": slope_tex }
+
+
 # save block structure:
 # seed : string
 # coins : int
@@ -183,6 +235,10 @@ func generate_cylinder(inPos : Vector3, in_height : float, in_radius_bot : float
 
 
 func _ready():
+	load_themes()
+	_generate_theme_textures()
+	if theme_list.size() > 0:
+		current_theme = theme_list[0]
 	add_child(global_sound)
 	global_sound.stream = global_sound_stream
 	global_sound.play()

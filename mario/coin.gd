@@ -13,6 +13,8 @@ var destroy_on_retry : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if SOGlobal.current_theme:
+		animated_sprite_3d.modulate = SOGlobal.current_theme.coin_tint
 	await get_tree().create_timer(0.1).timeout
 	var intersecting = true
 	animated_sprite_3d.play("default")

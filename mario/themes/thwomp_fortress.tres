@@ -1,0 +1,46 @@
+[gd_resource type="Resource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://mario/level_theme.gd" id="1_c76x8"]
+
+[sub_resource type="Gradient" id="Gradient_block"]
+offsets = PackedFloat32Array(0, 0.15, 0.3, 0.5, 0.7, 0.85, 1)
+colors = PackedColorArray(0.08, 0.08, 0.1, 1, 0.15, 0.12, 0.12, 1, 0.25, 0.22, 0.2, 1, 0.35, 0.32, 0.3, 1, 0.45, 0.42, 0.38, 1, 0.3, 0.28, 0.25, 1, 0.12, 0.1, 0.08, 1)
+
+[sub_resource type="Gradient" id="Gradient_sky"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(0.05, 0.0, 0.05, 1, 0.15, 0.02, 0.04, 1, 0.25, 0.05, 0.08, 1, 0.2, 0.08, 0.1, 1, 0.1, 0.03, 0.06, 1)
+
+[sub_resource type="Gradient" id="Gradient_skyramp"]
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+colors = PackedColorArray(0.0, 0.0, 0.0, 1, 0.1, 0.02, 0.05, 1, 0.2, 0.05, 0.08, 1, 0.08, 0.02, 0.04, 1)
+
+[resource]
+script = ExtResource("1_c76x8")
+theme_id = 2
+theme_name = "ThwompFortress"
+display_name = "Thwomp Fortress"
+block_color_gradient = SubResource("Gradient_block")
+sky_color_gradient = SubResource("Gradient_sky")
+sky_color_ramp = SubResource("Gradient_skyramp")
+fog_density = 0.015
+fog_color = Color(0.08, 0.04, 0.06, 1)
+ambient_color = Color(0.08, 0.06, 0.1, 1)
+light_color = Color(0.6, 0.3, 0.2, 1)
+light_euler = Vector3(-20, 50, 0)
+death_plane_color = Color(0.3, 0.0, 0.0, 1)
+coin_tint = Color(0.8, 0.6, 0.2, 1)
+default_surface_type = 48
+iter_min = 20
+iter_max = 45
+block_width_min = 6
+block_width_max = 14
+block_height_max = 14
+block_length_min = 6
+block_length_max = 14
+pillar_chance = 0.04
+slope_chance_north = 0.2
+slope_chance_east = 0.2
+slope_chance_south = 0.2
+slope_chance_west = 0.2
+max_slope = 3
+coin_density_mult = 0.7
