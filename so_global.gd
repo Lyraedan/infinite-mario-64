@@ -232,9 +232,9 @@ func _generate_theme_textures() -> void:
 			"slope": "%s/course_01_bobomb_battlefield/tex_37_3_32x32.png" % ST,
 		},
 		LevelTheme.ThemeID.THWOMP_FORTRESS: {
-			"albedo": "%s/course_02_whomp_fortress/tex_2_102_32x32.png" % ST,
-			"side": "%s/course_02_whomp_fortress/tex_206_20_32x16.png" % ST,
-			"slope": "%s/course_02_whomp_fortress/tex_103_104_32x32.png" % ST,
+			"albedo": "%s/course_02_whomp_fortress/tex_36_36_32x32.png" % ST,
+			"side": "%s/course_02_whomp_fortress/tex_206_38_32x32.png" % ST,
+			"slope": "%s/course_02_whomp_fortress/tex_137_70_32x32.png" % ST,
 		},
 		LevelTheme.ThemeID.SNOW_LAND: {
 			"albedo": "%s/course_04_cool_cool_mountain/tex_105_3_32x32.png" % ST,

@@ -18,6 +18,9 @@ func pick_rom() -> void:
 
 func _on_file_selected(path: String) -> void:
 	if LibSM64Global.load_rom_file(path):
+		var cfg := ConfigFile.new()
+		cfg.set_value("rom", "last_path", path)
+		cfg.save("user://infinite_mario_64.cfg")
 		rom_loaded.emit()
 	else:
 		%InvalidRomDialog.popup_centered()
