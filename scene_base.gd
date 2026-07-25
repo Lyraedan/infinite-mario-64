@@ -440,6 +440,27 @@ func _generate_random_level(useSeed) -> void:
 
 		level_gen_source += Vector3(0, vertical_vel, level_gen_source_velocity).rotated(Vector3(0, 1, 0), deg_to_rad(ang_deg))
 
+	var pool_random = RandomNumberGenerator.new()
+	pool_random.seed = apple_seed.randi()
+	var use_lava_pools: bool = theme and theme.theme_id == LevelTheme.ThemeID.LAVA_FIRE_SEA
+	var pool_tex: Texture2D = SOGlobal.lava_texture if use_lava_pools else SOGlobal.water_texture
+	var num_pools: int = pool_random.randi_range(2, 4)
+	for p in range(num_pools):
+		var idx: int = pool_random.randi_range(0, level_root_position_table.size() - 1)
+		var pool_center: Vector3 = level_root_position_table[idx]
+		var pool_size: int = pool_random.randi_range(2, 3)
+		for dx in range(pool_size):
+			for dz in range(pool_size):
+				var pool_pos: Vector3 = snapped(pool_center + Vector3(dx, 0, dz), Vector3.ONE)
+				var pool_block := SOGlobal.generate_block_from_pos_and_size(pool_pos, Vector3(1, 1, 1))
+				pool_block.set_instance_shader_parameter("texture_albedo", pool_tex)
+				pool_block.set_instance_shader_parameter("side_texture_albedo", pool_tex)
+				pool_block.set_instance_shader_parameter("slope_texture_albedo", pool_tex)
+				for child in pool_block.get_children():
+					if child is LibSM64SurfacePropertiesComponent:
+						child.surface_properties.surface_type = 0
+						break
+
 	await get_tree().create_timer(0.02).timeout
 	var coin_density_mult: float = 1.0
 	if theme and theme.coin_density_mult >= 0:

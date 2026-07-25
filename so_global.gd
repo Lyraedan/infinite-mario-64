@@ -25,6 +25,8 @@ var compat_renderer : bool = ProjectSettings.get_setting("rendering/renderer/ren
 
 var theme_list: Array[LevelTheme] = []
 var theme_textures_cache: Dictionary = {}
+var water_texture: Texture2D
+var lava_texture: Texture2D
 
 const THEME_PATHS: Array[String] = [
 	"res://mario/themes/default.tres",
@@ -258,6 +260,13 @@ func _generate_theme_textures() -> void:
 		if not slope_tex:
 			slope_tex = load("res://mario/debug_floor_slope.png")
 		theme_textures_cache[theme_id] = { "albedo": albedo_tex, "side": side_tex, "slope": slope_tex }
+
+	water_texture = _load_runtime_texture("%s/peach_castle_courtyard/tex_71_105_32x32.png" % ST)
+	if not water_texture:
+		water_texture = load("res://mario/debug_floor.png")
+	lava_texture = _load_runtime_texture("%s/course_07_lethal_lava_land/tex_173_3_32x32.png" % ST)
+	if not lava_texture:
+		lava_texture = load("res://mario/debug_floor.png")
 
 
 # save block structure:
