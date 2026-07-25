@@ -207,37 +207,11 @@ layout_mode = 1
 anchor_left = 0.312
 anchor_top = 0.68
 anchor_right = 0.687
-anchor_bottom = 0.717
-
-[node name="ThemeLabel" type="Label" parent="GeneratePrompt" unique_id=2128200940]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.05
-anchor_right = 1.0
-anchor_bottom = 1.35
-offset_left = -0.36001408
-offset_top = 16.428003
-offset_right = -0.3600769
-offset_bottom = 32.43601
+anchor_bottom = 0.8
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("1_mvtme")
-theme_override_font_sizes/font_size = 20
-text = "Theme: Infinite Mario 64"
-horizontal_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="GeneratePrompt" unique_id=1471531990]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.464
-offset_right = 9.15527e-05
-offset_bottom = 0.00203323
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.470588)
-
-[node name="HBoxContainer" type="HBoxContainer" parent="GeneratePrompt/ColorRect" unique_id=1649104402]
+[node name="VBoxContainer" type="VBoxContainer" parent="GeneratePrompt" unique_id=852136461]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -245,14 +219,43 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SeedButton" type="Button" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=1834354417]
+[node name="ColorRect2" type="ColorRect" parent="GeneratePrompt/VBoxContainer" unique_id=292133426]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+color = Color(0, 0, 0, 0.470588)
+
+[node name="ThemeLabel" type="Label" parent="GeneratePrompt/VBoxContainer/ColorRect2" unique_id=2128200940]
+layout_mode = 0
+offset_left = -0.36001587
+offset_top = 8.200012
+offset_right = 478.63998
+offset_bottom = 32.200012
+theme_override_fonts/font = ExtResource("1_mvtme")
+theme_override_font_sizes/font_size = 20
+text = "Theme: Infinite Mario 64"
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="GeneratePrompt/VBoxContainer" unique_id=1471531990]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+color = Color(0, 0, 0, 0.470588)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GeneratePrompt/VBoxContainer/ColorRect" unique_id=1649104402]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SeedButton" type="Button" parent="GeneratePrompt/VBoxContainer/ColorRect/HBoxContainer" unique_id=1834354417]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_mvtme")
 theme_override_font_sizes/font_size = 24
 text = "  Generate  From  Seed"
 flat = true
 
-[node name="SeedText" type="LineEdit" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=78234000]
+[node name="SeedText" type="LineEdit" parent="GeneratePrompt/VBoxContainer/ColorRect/HBoxContainer" unique_id=78234000]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("1_mvtme")
@@ -263,5 +266,11 @@ context_menu_enabled = false
 drag_and_drop_selection_enabled = false
 flat = true
 
-[connection signal="pressed" from="GeneratePrompt/ColorRect/HBoxContainer/SeedButton" to="." method="_on_seed_button_pressed"]
-[connection signal="text_submitted" from="GeneratePrompt/ColorRect/HBoxContainer/SeedText" to="." method="_on_seed_text_text_submitted"]
+[node name="ThemeOptionButton" type="OptionButton" parent="GeneratePrompt/VBoxContainer" unique_id=1032652973]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_mvtme")
+theme_override_font_sizes/font_size = 20
+alignment = 1
+
+[connection signal="pressed" from="GeneratePrompt/VBoxContainer/ColorRect/HBoxContainer/SeedButton" to="." method="_on_seed_button_pressed"]
+[connection signal="text_submitted" from="GeneratePrompt/VBoxContainer/ColorRect/HBoxContainer/SeedText" to="." method="_on_seed_text_text_submitted"]

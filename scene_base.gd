@@ -574,7 +574,6 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 	SOGlobal.current_seed = useSeed
 
 	var parsed_seed: String = useSeed
-	SOGlobal.theme_override_index = -1
 	if ":" in useSeed:
 		var parts: PackedStringArray = useSeed.split(":", true, 2)
 		parsed_seed = parts[0]

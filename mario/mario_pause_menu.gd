@@ -9,17 +9,19 @@ class_name MarioPauseMenu extends Control
 @onready var exit_label = $Control/LabelContainer/ExitLabel
 @onready var label_container = $Control/LabelContainer
 @onready var generate_prompt = $GeneratePrompt
-@onready var seed_text := $GeneratePrompt/ColorRect/HBoxContainer/SeedText as LineEdit
-@onready var seed_button = $GeneratePrompt/ColorRect/HBoxContainer/SeedButton
+@onready var seed_text := $GeneratePrompt/VBoxContainer/ColorRect/HBoxContainer/SeedText as LineEdit
+@onready var seed_button = $GeneratePrompt/VBoxContainer/ColorRect/HBoxContainer/SeedButton
 @onready var restart_request = $RestartRequest
+@onready var theme_dropdown = $GeneratePrompt/VBoxContainer/ThemeOptionButton as OptionButton
+@onready var theme_display = $GeneratePrompt/VBoxContainer/ColorRect2/ThemeLabel as Label
+@onready var star_counter = $Control/StatDisplay/HBoxContainer/StarCounter
+@onready var coin_counter = $Control/StatDisplay/HBoxContainer/CoinCounter
+@onready var control = $Control
 
 var selected_menu_option : int = 0
 var restart_requested : bool = false
 var hide_pause_menu : bool = false
-var theme_cycle_index: int = -1
 var last_stick_value : Vector2 = Vector2.ZERO
-var h_das_timer : int = 0
-var h_last_das_trigger : int = 0
 var v_das_timer : int = 0
 var v_last_das_trigger : int = 0
 const das : int = 200
@@ -32,7 +34,13 @@ func _ready():
 	resume_label.label_settings.font_color = Color(1, 1, 1)
 	star_counter.text = "* x " + str(SOGlobal.save_data.get_total_star_count())
 	coin_counter.text = "$ x " + str(SOGlobal.save_data.get_total_coin_coint())
+	
+	theme_dropdown.add_item("Random")
+	for theme in SOGlobal.theme_list:
+		theme_dropdown.add_item(theme.display_name)
+	
 	_update_theme_display()
+	theme_dropdown.item_selected.connect(_on_theme_dropdown_item_selected)
 
 func change_menu_selection(desired_selected : int) -> void:
 	
@@ -93,22 +101,26 @@ func call_selection_function(desired_button : int) -> void:
 			SOGlobal.save_data.save_game()
 			get_tree().quit()
 
+func _on_theme_dropdown_item_selected(index: int):
+	if index == 0:
+		SOGlobal.theme_override_index = -1
+	else:
+		SOGlobal.theme_override_index = index - 1
+	_update_theme_display()
+
 func _update_theme_display() -> void:
-	var theme := SOGlobal.current_theme
-	if theme:
-		var theme_text: String = "Theme: " + theme.display_name
-		if theme_display:
-			theme_display.text = theme_text
+	if SOGlobal.theme_override_index == -1:
+		theme_dropdown.select(0)
+		if SOGlobal.current_theme:
+			theme_display.text = "Theme: " + SOGlobal.current_theme.display_name
+	else:
+		theme_dropdown.select(SOGlobal.theme_override_index + 1)
+		theme_display.text = "Theme: " + SOGlobal.theme_list[SOGlobal.theme_override_index].display_name
 
 func _unpause() -> void:
 	await get_tree().create_timer(0.05).timeout
 	SOGlobal.current_mario._paused = false
 	queue_free()
-
-@onready var star_counter = $Control/StatDisplay/HBoxContainer/StarCounter
-@onready var coin_counter = $Control/StatDisplay/HBoxContainer/CoinCounter
-@onready var control = $Control
-@onready var theme_display = $GeneratePrompt/ThemeLabel as Label
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -130,7 +142,6 @@ func _process(delta):
 	inp.x = move_toward(inp.x, 0, 0.5)
 	inp.y = move_toward(inp.y, 0, 0.5)
 	
-	var h_dir : int = 0
 	var v_dir : int = 0
 	
 	if inp.y != 0:
@@ -142,19 +153,6 @@ func _process(delta):
 			if Time.get_ticks_msec() > v_last_das_trigger + arr:
 				v_last_das_trigger = Time.get_ticks_msec()
 				change_menu_selection(selected_menu_option + v_dir)
-	if inp.x != 0 and selected_menu_option == 2:
-		h_dir = sign(inp.x)
-		if last_stick_value.x == 0:
-			var theme_list := SOGlobal.theme_list
-			if theme_list.size() > 0:
-				var cur_idx: int = 0
-				if SOGlobal.current_theme:
-					cur_idx = theme_list.find(SOGlobal.current_theme)
-				cur_idx = (cur_idx + h_dir + theme_list.size()) % theme_list.size()
-				SOGlobal.theme_override_index = cur_idx
-				SOGlobal.current_theme = theme_list[cur_idx]
-				SOGlobal.update_music(SOGlobal.current_theme)
-				_update_theme_display()
 	last_stick_value = inp
 	
 	if Input.is_action_just_pressed("mario_a"):
