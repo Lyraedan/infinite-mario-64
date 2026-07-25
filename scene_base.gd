@@ -654,7 +654,6 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 	var sky_random = RandomNumberGenerator.new()
 	sky_random.seed = hash(useSeed)
 
-<<<<<<< Updated upstream
 	var sky_colors := Gradient.new()
 	var use_sky_gradient: bool = theme and theme.sky_color_gradient != null
 	if use_sky_gradient:
@@ -719,15 +718,8 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 	var bg_tex: Texture2D = null
 	if theme:
 		var texs = SOGlobal.theme_textures_cache.get(theme.theme_id)
-		if texs:
-			bg_tex = texs.get("background")
-=======
-	var bg_tex: Texture2D = null
-	if theme:
-		var texs = SOGlobal.theme_textures_cache.get(theme.theme_id)
 		if texs and texs.get("background") != null:
 			bg_tex = texs["background"]
->>>>>>> Stashed changes
 
 	if bg_tex:
 		var pano := PanoramaSkyMaterial.new()
@@ -735,67 +727,7 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 		world_environment.environment.sky.sky_material = pano
 	else:
 		world_environment.environment.sky.sky_material = SOGlobal.sky_material
-<<<<<<< Updated upstream
 		SOGlobal.sky_material.set_shader_parameter("sky_color_ramp", sky_ramp_texture)
-=======
-
-		var sky_colors := Gradient.new()
-		var use_sky_gradient: bool = theme and theme.sky_color_gradient != null
-		if use_sky_gradient:
-			sky_colors = theme.sky_color_gradient
-		else:
-			var color_count : int = sky_random.randi_range(3, 12)
-			var avg_dist : float = 1.0 / color_count
-			for i in range(color_count - 1):
-				var hue : float = sky_random.randf_range(0, 1)
-				var saturation : float = sky_random.randf_range(0.16, 0.75)
-				var value : float = sky_random.randf_range(0.15, 0.6)
-				var color_offset : float = avg_dist * 0.5 * sky_random.randf_range(-1, 1)
-				var final_point_pos : float = float(i + 1) * avg_dist + color_offset
-				sky_colors.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
-			var hue : float = sky_random.randf_range(0, 1)
-			var saturation : float = sky_random.randf_range(0.3, 1)
-			var value : float = sky_random.randf_range(0.3, 1)
-			sky_colors.add_point(0, Color.from_hsv(hue, saturation, value))
-			sky_colors.add_point(0.999, Color.from_hsv(hue, saturation, value))
-
-		var sky_ramp := Gradient.new()
-		var use_sky_ramp: bool = theme and theme.sky_color_ramp != null
-		if use_sky_ramp:
-			sky_ramp = theme.sky_color_ramp
-		else:
-			var color_count : int = sky_random.randi_range(3, 12)
-			var avg_dist : float = 1.0 / color_count
-			for i in range(color_count - 1):
-				var hue : float = sky_random.randf_range(0, 1)
-				var saturation : float = sky_random.randf_range(0.2, 0.75)
-				var value : float = sky_random.randf_range(0.2, 0.6)
-				var color_offset : float = avg_dist * 0.5 * sky_random.randf_range(-1, 1)
-				var final_point_pos : float = lerp(float(i + 1) * avg_dist + color_offset, 0.75, 0.5)
-				sky_ramp.add_point(final_point_pos, Color.from_hsv(hue, saturation, value))
-			var hue : float = sky_random.randf_range(0, 1)
-			var saturation : float = sky_random.randf_range(0.6, 1)
-			var value : float = sky_random.randf_range(0.01, 0.05)
-			sky_ramp.add_point(0, Color.from_hsv(hue, saturation, value))
-			sky_ramp.add_point(0.999, Color.from_hsv(hue, saturation, value))
-
-		var sky_gradient_texture : GradientTexture2D = GradientTexture2D.new()
-		sky_gradient_texture.width = 256
-		sky_gradient_texture.height = 1
-		sky_gradient_texture.fill_from = Vector2(-0.001, 0)
-		sky_gradient_texture.fill_to = Vector2(1.001, 0)
-		sky_gradient_texture.gradient = sky_colors
-
-		var sky_ramp_texture : GradientTexture2D = GradientTexture2D.new()
-		sky_ramp_texture.width = 256
-		sky_ramp_texture.height = 1
-		sky_ramp_texture.fill_from = Vector2(-0.001, 0)
-		sky_ramp_texture.fill_to = Vector2(1.001, 0)
-		sky_ramp_texture.gradient = sky_ramp
-
-		SOGlobal.sky_material.set_shader_parameter("sky_color_ramp", sky_ramp_texture)
-
->>>>>>> Stashed changes
 		var sky_noise_texture := NoiseTexture2D.new()
 		sky_noise_texture.seamless = true
 		if use_sky_gradient:
@@ -827,17 +759,10 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 		sky_noise_texture.noise = sky_noise
 		await sky_noise_texture.changed
 		SOGlobal.sky_material.set_shader_parameter("sky_texture", sky_noise_texture)
-<<<<<<< Updated upstream
 	if !theme or theme.fog_density < 0:
 		world_environment.environment.fog_density = sky_random.randf_range(0.0005, 0.01)
 	if SOGlobal.compat_renderer:
 		world_environment.environment.fog_light_energy *= 0.25
-=======
-		if !theme or theme.fog_density < 0:
-			world_environment.environment.fog_density = sky_random.randf_range(0.0005, 0.01)
-		if SOGlobal.compat_renderer:
-			world_environment.environment.fog_light_energy *= 0.25
->>>>>>> Stashed changes
 
 func _ready() -> void:
 	_create_mario_world()
