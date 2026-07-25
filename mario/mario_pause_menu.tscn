@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://bdc07kwcxglgb"]
 
+<<<<<<< Updated upstream
 [ext_resource type="Script" uid="uid://covsa610kemgy" path="res://mario/mario_pause_menu.gd" id="1_muu6i"]
+=======
+[ext_resource type="Script" uid="uid://4p8tnqi81m5p" path="res://mario/mario_pause_menu.gd" id="1_muu6i"]
+>>>>>>> Stashed changes
 [ext_resource type="FontFile" uid="uid://c25d003g01x4h" path="res://mario/Mario64.ttf" id="1_mvtme"]
 [ext_resource type="AudioStream" uid="uid://vuyuw4rpqy3a" path="res://mario/sfx/sm64_pause.wav" id="2_28vdd"]
 
@@ -47,7 +51,11 @@ font_color = Color(0.2, 0.2, 0.2, 1)
 font = ExtResource("1_mvtme")
 font_size = 24
 
+<<<<<<< Updated upstream
 [node name="Control" type="Control" unique_id=1528118940]
+=======
+[node name="Control" type="Control" unique_id=1506137836]
+>>>>>>> Stashed changes
 z_index = 1
 layout_mode = 3
 anchors_preset = 15
@@ -57,7 +65,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_muu6i")
 
+<<<<<<< Updated upstream
 [node name="RestartRequest" type="Label" parent="." unique_id=2078296523]
+=======
+[node name="RestartRequest" type="Label" parent="." unique_id=1148891561]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.022
@@ -74,12 +86,20 @@ text = "* Some changed settings require a restart."
 label_settings = SubResource("LabelSettings_s8vbx")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=682863324]
+=======
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1511926678]
+>>>>>>> Stashed changes
 stream = ExtResource("2_28vdd")
 volume_db = -10.0
 autoplay = true
 
+<<<<<<< Updated upstream
 [node name="Control" type="Control" parent="." unique_id=1918337706]
+=======
+[node name="Control" type="Control" parent="." unique_id=1062273790]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchor_left = 0.312
 anchor_top = 0.333
@@ -92,7 +112,11 @@ offset_bottom = -10.24
 grow_horizontal = 2
 grow_vertical = 2
 
+<<<<<<< Updated upstream
 [node name="ColorRect" type="ColorRect" parent="Control" unique_id=55937906]
+=======
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=227966509]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -101,7 +125,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
+<<<<<<< Updated upstream
 [node name="Control" type="Control" parent="Control/ColorRect" unique_id=674215181]
+=======
+[node name="Control" type="Control" parent="Control/ColorRect" unique_id=715908115]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,7 +141,11 @@ offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 
+<<<<<<< Updated upstream
 [node name="LabelContainer" type="VBoxContainer" parent="Control" unique_id=1184563121]
+=======
+[node name="LabelContainer" type="VBoxContainer" parent="Control" unique_id=1652425699]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.071
@@ -125,49 +157,81 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
 
+<<<<<<< Updated upstream
 [node name="ResumeLabel" type="Label" parent="Control/LabelContainer" unique_id=1338461077]
+=======
+[node name="ResumeLabel" type="Label" parent="Control/LabelContainer" unique_id=1378842310]
+>>>>>>> Stashed changes
 layout_mode = 2
 text = "Resume"
 label_settings = SubResource("LabelSettings_5f5i0")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="RespawnLabel" type="Label" parent="Control/LabelContainer" unique_id=1150188532]
+=======
+[node name="RespawnLabel" type="Label" parent="Control/LabelContainer" unique_id=142735159]
+>>>>>>> Stashed changes
 layout_mode = 2
 text = "Retry"
 label_settings = SubResource("LabelSettings_pj5mv")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="GenerateNewLevelLabel" type="Label" parent="Control/LabelContainer" unique_id=1126112402]
+=======
+[node name="GenerateNewLevelLabel" type="Label" parent="Control/LabelContainer" unique_id=110235872]
+>>>>>>> Stashed changes
 layout_mode = 2
 text = "Generate Random New Level"
 label_settings = SubResource("LabelSettings_mdaqi")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="ViewStageLabel" type="Label" parent="Control/LabelContainer" unique_id=1751406324]
+=======
+[node name="ViewStageLabel" type="Label" parent="Control/LabelContainer" unique_id=1229194116]
+>>>>>>> Stashed changes
 layout_mode = 2
 text = "View Level"
 label_settings = SubResource("LabelSettings_dear8")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="HistoryLabel" type="Label" parent="Control/LabelContainer" unique_id=1470998162]
+=======
+[node name="HistoryLabel" type="Label" parent="Control/LabelContainer" unique_id=1988668420]
+>>>>>>> Stashed changes
 layout_mode = 2
 text = "History"
 label_settings = SubResource("LabelSettings_jv1yw")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="SettingsLabel" type="Label" parent="Control/LabelContainer" unique_id=1940922970]
+=======
+[node name="SettingsLabel" type="Label" parent="Control/LabelContainer" unique_id=85462034]
+>>>>>>> Stashed changes
 layout_mode = 2
 text = "Settings"
 label_settings = SubResource("LabelSettings_m44o7")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="ExitLabel" type="Label" parent="Control/LabelContainer" unique_id=115302902]
+=======
+[node name="ExitLabel" type="Label" parent="Control/LabelContainer" unique_id=1843735970]
+>>>>>>> Stashed changes
 layout_mode = 2
 text = "Exit"
 label_settings = SubResource("LabelSettings_vc0ji")
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="StatDisplay" type="Control" parent="Control" unique_id=340997893]
+=======
+[node name="StatDisplay" type="Control" parent="Control" unique_id=1315198985]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchor_top = 0.895
 anchor_right = 1.0
@@ -177,7 +241,11 @@ offset_bottom = 0.222076
 grow_horizontal = 2
 grow_vertical = 2
 
+<<<<<<< Updated upstream
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/StatDisplay" unique_id=674320812]
+=======
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/StatDisplay" unique_id=1567962505]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -190,35 +258,58 @@ grow_vertical = 2
 theme_override_constants/separation = 24
 alignment = 1
 
+<<<<<<< Updated upstream
 [node name="StarCounter" type="Label" parent="Control/StatDisplay/HBoxContainer" unique_id=178360736]
+=======
+[node name="StarCounter" type="Label" parent="Control/StatDisplay/HBoxContainer" unique_id=1815976899]
+>>>>>>> Stashed changes
 layout_mode = 2
 size_flags_vertical = 1
 text = "* x 47"
 label_settings = SubResource("LabelSettings_6w4g4")
 
+<<<<<<< Updated upstream
 [node name="CoinCounter" type="Label" parent="Control/StatDisplay/HBoxContainer" unique_id=1836503482]
+=======
+[node name="CoinCounter" type="Label" parent="Control/StatDisplay/HBoxContainer" unique_id=815994044]
+>>>>>>> Stashed changes
 layout_mode = 2
 size_flags_vertical = 1
 text = "$ x 5,493"
 label_settings = SubResource("LabelSettings_6w4g4")
 
+<<<<<<< Updated upstream
 [node name="GeneratePrompt" type="Control" parent="." unique_id=309698940]
+=======
+[node name="GeneratePrompt" type="Control" parent="." unique_id=1513077555]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchor_left = 0.312
 anchor_top = 0.68
 anchor_right = 0.687
 anchor_bottom = 0.717
 
+<<<<<<< Updated upstream
 [node name="ThemeLabel" type="Label" parent="GeneratePrompt" unique_id=1543384312]
+=======
+[node name="ThemeLabel" type="Label" parent="GeneratePrompt" unique_id=2128200940]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.05
 anchor_right = 1.0
 anchor_bottom = 1.35
+<<<<<<< Updated upstream
 offset_left = -1.3600141
 offset_top = 19.428003
 offset_right = -1.3600769
 offset_bottom = 35.43601
+=======
+offset_left = -0.36001408
+offset_top = 16.428003
+offset_right = -0.3600769
+offset_bottom = 32.43601
+>>>>>>> Stashed changes
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_mvtme")
@@ -226,7 +317,11 @@ theme_override_font_sizes/font_size = 20
 text = "Theme: Infinite Mario 64"
 horizontal_alignment = 1
 
+<<<<<<< Updated upstream
 [node name="ColorRect" type="ColorRect" parent="GeneratePrompt" unique_id=1241039281]
+=======
+[node name="ColorRect" type="ColorRect" parent="GeneratePrompt" unique_id=1471531990]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -237,7 +332,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
+<<<<<<< Updated upstream
 [node name="HBoxContainer" type="HBoxContainer" parent="GeneratePrompt/ColorRect" unique_id=1407424250]
+=======
+[node name="HBoxContainer" type="HBoxContainer" parent="GeneratePrompt/ColorRect" unique_id=1649104402]
+>>>>>>> Stashed changes
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -245,14 +344,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+<<<<<<< Updated upstream
 [node name="SeedButton" type="Button" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=310019380]
+=======
+[node name="SeedButton" type="Button" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=1834354417]
+>>>>>>> Stashed changes
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_mvtme")
 theme_override_font_sizes/font_size = 24
 text = "  Generate  From  Seed"
 flat = true
 
+<<<<<<< Updated upstream
 [node name="SeedText" type="LineEdit" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=2035957743]
+=======
+[node name="SeedText" type="LineEdit" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=78234000]
+>>>>>>> Stashed changes
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("1_mvtme")

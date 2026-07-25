@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://bbflq1vcknt2x"]
 
-[ext_resource type="Shader" uid="uid://bf0agi00i001j" path="res://sky_shader.gdshader" id="1_8c870"]
+[ext_resource type="Shader" uid="uid://cuh7dojgtklsc" path="res://sky_shader.gdshader" id="1_8c870"]
 [ext_resource type="Texture2D" uid="uid://bmwgsn0nj0cmn" path="res://mario/dark_world.webp" id="2_327x2"]
 
 [sub_resource type="Gradient" id="Gradient_npu58"]
