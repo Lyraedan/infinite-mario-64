@@ -16,7 +16,10 @@ func _ready():
 	visible = false
 	var new_star_mat := ShaderMaterial.new() as ShaderMaterial
 	new_star_mat.shader = preload("res://EnvironmentMap.gdshader")
-	new_star_mat.set_shader_parameter("albedo", Color(1.0, 0.75, 0.25, 1.0))
+	var star_col: Color = Color(1.0, 0.75, 0.25, 1.0)
+	if SOGlobal.current_theme:
+		star_col = SOGlobal.current_theme.star_color
+	new_star_mat.set_shader_parameter("albedo", star_col)
 	new_star_mat.set_shader_parameter("albedo_texture", preload("res://mario/env_map_shiny_blurry.png"))
 	if star_gotten:
 		new_star_mat.set_shader_parameter("albedo", Color(0.05, 0.1, 0.3, 0.75))
