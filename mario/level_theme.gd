@@ -8,7 +8,17 @@ enum ThemeID {
 	LAVA_FIRE_SEA
 }
 
+enum GenerationStrategy {
+	DEFAULT_RANDOM_WALK,
+	BOBOMB_BATTLEFIELD,
+	THWOMP_FORTRESS,
+	SNOW_LAND,
+	LAVA_FIRE_SEA
+}
+
 const THEME_COUNT: int = 5
+
+@export var generation_strategy: GenerationStrategy = GenerationStrategy.DEFAULT_RANDOM_WALK
 
 @export var theme_id: ThemeID = ThemeID.DEFAULT
 @export var theme_name: String = "Default"

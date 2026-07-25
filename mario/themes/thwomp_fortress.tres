@@ -16,6 +16,7 @@ colors = PackedColorArray(0.1, 0.12, 0.2, 1, 0.3, 0.35, 0.5, 1, 0.5, 0.55, 0.7, 
 
 [resource]
 script = ExtResource("1_c76x8")
+generation_strategy = 2
 theme_id = 2
 theme_name = "ThwompFortress"
 display_name = "Thwomp Fortress"
