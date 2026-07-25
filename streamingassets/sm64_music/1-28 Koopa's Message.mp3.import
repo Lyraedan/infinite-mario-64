@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bibv2ay4atc55"
+path="res://.godot/imported/1-28 Koopa's Message.mp3-b773ef2797eee8b50fbcc71a26f3c433.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-28 Koopa's Message.mp3"
+dest_files=["res://.godot/imported/1-28 Koopa's Message.mp3-b773ef2797eee8b50fbcc71a26f3c433.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

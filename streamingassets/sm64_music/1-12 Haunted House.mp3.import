@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c5xroudkwp1pt"
+path="res://.godot/imported/1-12 Haunted House.mp3-0fa56d907900e858c680c0bf33b52d68.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-12 Haunted House.mp3"
+dest_files=["res://.godot/imported/1-12 Haunted House.mp3-0fa56d907900e858c680c0bf33b52d68.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

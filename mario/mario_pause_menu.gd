@@ -153,6 +153,7 @@ func _process(delta):
 				cur_idx = (cur_idx + h_dir + theme_list.size()) % theme_list.size()
 				SOGlobal.theme_override_index = cur_idx
 				SOGlobal.current_theme = theme_list[cur_idx]
+				SOGlobal.update_music(SOGlobal.current_theme)
 				_update_theme_display()
 	last_stick_value = inp
 	

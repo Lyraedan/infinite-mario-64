@@ -9,3 +9,4 @@ theme_name = "Default"
 display_name = "Infinite Mario 64"
 fog_density = -1.0
 default_surface_type = 0
+background_music_path = "res://streamingassets/sm64_music/1-06 Slider.mp3"

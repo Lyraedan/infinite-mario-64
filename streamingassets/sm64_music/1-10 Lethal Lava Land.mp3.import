@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dpm34wjskxgje"
+path="res://.godot/imported/1-10 Lethal Lava Land.mp3-f4b444c39f97fce5f11d94e106bdd75a.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-10 Lethal Lava Land.mp3"
+dest_files=["res://.godot/imported/1-10 Lethal Lava Land.mp3-f4b444c39f97fce5f11d94e106bdd75a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dqtqxdxok8802"
+path="res://.godot/imported/1-30 Koopa's Theme.mp3-9c6ae3377e4026dd1ef19ca3860210e3.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-30 Koopa's Theme.mp3"
+dest_files=["res://.godot/imported/1-30 Koopa's Theme.mp3-9c6ae3377e4026dd1ef19ca3860210e3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

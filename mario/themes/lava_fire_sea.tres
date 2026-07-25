@@ -17,6 +17,7 @@ colors = PackedColorArray(0.1, 0.02, 0.01, 1, 0.4, 0.12, 0.03, 1, 0.7, 0.25, 0.0
 [resource]
 script = ExtResource("1_c76x8")
 theme_id = 4
+background_music_path = "res://streamingassets/sm64_music/1-10 Lethal Lava Land.mp3"
 theme_name = "LavaFireSea"
 display_name = "Lava Fire Sea"
 block_color_gradient = SubResource("Gradient_block")

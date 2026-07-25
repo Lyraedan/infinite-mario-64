@@ -586,6 +586,7 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 					break
 
 	SOGlobal.current_theme = SOGlobal.get_theme_for_seed(parsed_seed)
+	SOGlobal.update_music(SOGlobal.current_theme)
 	useSeed = parsed_seed
 
 	LibSM64.scale_factor = 110.0

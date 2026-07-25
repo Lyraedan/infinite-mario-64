@@ -30,6 +30,7 @@ const THEME_COUNT: int = 5
 @export var light_euler: Vector3 = Vector3(-30, 45, 0)
 
 @export var death_plane_color: Color = Color(1.0, 0.2, 0.2)
+@export var background_music_path: String
 
 @export var coin_tint: Color = Color(1, 0.8, 0.29)
 @export var star_color: Color = Color(1.0, 0.75, 0.25)

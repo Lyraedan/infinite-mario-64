@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bi5rh1htwd68k"
+path="res://.godot/imported/1-20 Toad's Message.mp3-5cfe0a857efd21e8f48c6ffaaa3f8f72.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-20 Toad's Message.mp3"
+dest_files=["res://.godot/imported/1-20 Toad's Message.mp3-5cfe0a857efd21e8f48c6ffaaa3f8f72.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

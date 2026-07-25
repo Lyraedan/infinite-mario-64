@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://brdqjnn72habe"
+path="res://.godot/imported/1-35 Staff Roll.mp3-7e0a4f4116b5828be8dd3b4ed5efb7bc.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-35 Staff Roll.mp3"
+dest_files=["res://.godot/imported/1-35 Staff Roll.mp3-7e0a4f4116b5828be8dd3b4ed5efb7bc.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

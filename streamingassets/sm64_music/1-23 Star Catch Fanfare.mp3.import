@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://kcfmo54qavu5"
+path="res://.godot/imported/1-23 Star Catch Fanfare.mp3-692ce30b2ce49ce7c9077a40096833d0.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-23 Star Catch Fanfare.mp3"
+dest_files=["res://.godot/imported/1-23 Star Catch Fanfare.mp3-692ce30b2ce49ce7c9077a40096833d0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

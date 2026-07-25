@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://k7svlxe3ml2n"
+path="res://.godot/imported/1-33 Ultimate Koopa Clear.mp3-a5b90d0ec91a5b863b5356aeab7dabcb.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-33 Ultimate Koopa Clear.mp3"
+dest_files=["res://.godot/imported/1-33 Ultimate Koopa Clear.mp3-a5b90d0ec91a5b863b5356aeab7dabcb.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

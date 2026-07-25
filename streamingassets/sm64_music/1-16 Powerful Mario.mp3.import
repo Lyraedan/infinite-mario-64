@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://5sprhfeompdc"
+path="res://.godot/imported/1-16 Powerful Mario.mp3-2e967b5a0a029c180750d0bb67a56365.mp3str"
+
+[deps]
+
+source_file="res://streamingassets/sm64_music/1-16 Powerful Mario.mp3"
+dest_files=["res://.godot/imported/1-16 Powerful Mario.mp3-2e967b5a0a029c180750d0bb67a56365.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
