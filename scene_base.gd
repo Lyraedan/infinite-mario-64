@@ -711,39 +711,50 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 		debug_gradient.texture = sky_ramp_texture
 		SOGlobal.add_child(debug_gradient)
 
-	SOGlobal.sky_material.set_shader_parameter("sky_color_ramp", sky_ramp_texture)
-
-	var sky_noise_texture := NoiseTexture2D.new()
-	sky_noise_texture.seamless = true
-	if use_sky_gradient:
-		sky_noise_texture.color_ramp = sky_colors
-	var sky_noise := FastNoiseLite.new()
-	sky_noise.seed = sky_random.randi()
+	var bg_tex: Texture2D = null
 	if theme:
-		sky_noise.seed += theme.sky_noise_seed_offset
-	sky_noise.noise_type = sky_random.randi_range(0, 5)
-	sky_noise.fractal_type = sky_random.randi_range(0, 3)
-	sky_noise.cellular_return_type = sky_random.randi_range(0, 6)
-	sky_noise.cellular_distance_function = sky_random.randi_range(0, 3)
-	sky_noise.domain_warp_enabled = bool(sky_random.randi_range(0, 1))
-	sky_noise.domain_warp_fractal_type = sky_random.randi_range(0, 2)
-	sky_noise.cellular_jitter = sky_random.randf_range(0.0, 3.0)
-	sky_noise.domain_warp_amplitude = sky_random.randf_range(0, 60)
-	sky_noise.domain_warp_fractal_gain = sky_random.randf_range(0.0, 2.0)
-	sky_noise.domain_warp_fractal_lacunarity = sky_random.randf_range(0.0, 15.0)
-	sky_noise.domain_warp_fractal_octaves = sky_random.randi_range(0, 5)
-	sky_noise.domain_warp_frequency = sky_random.randf_range(0.0, 0.5)
-	sky_noise.fractal_gain = sky_random.randf_range(0.0, 2.0)
-	sky_noise.fractal_lacunarity = sky_random.randf_range(0.0, 4.0)
-	sky_noise.fractal_octaves = sky_random.randi_range(0, 5)
-	sky_noise.fractal_ping_pong_strength = sky_random.randf_range(0.0, 4.0)
-	sky_noise.fractal_weighted_strength = sky_random.randf_range(0.0, 2.0)
-	sky_noise.frequency = sky_random.randf_range(0.001, 0.05)
-	sky_noise_texture.width = 256
-	sky_noise_texture.height = 256
-	sky_noise_texture.noise = sky_noise
-	await sky_noise_texture.changed
-	SOGlobal.sky_material.set_shader_parameter("sky_texture", sky_noise_texture)
+		var texs = SOGlobal.theme_textures_cache.get(theme.theme_id)
+		if texs:
+			bg_tex = texs.get("background")
+
+	if bg_tex:
+		var pano := PanoramaSkyMaterial.new()
+		pano.panorama = bg_tex
+		world_environment.environment.sky.sky_material = pano
+	else:
+		world_environment.environment.sky.sky_material = SOGlobal.sky_material
+		SOGlobal.sky_material.set_shader_parameter("sky_color_ramp", sky_ramp_texture)
+		var sky_noise_texture := NoiseTexture2D.new()
+		sky_noise_texture.seamless = true
+		if use_sky_gradient:
+			sky_noise_texture.color_ramp = sky_colors
+		var sky_noise := FastNoiseLite.new()
+		sky_noise.seed = sky_random.randi()
+		if theme:
+			sky_noise.seed += theme.sky_noise_seed_offset
+		sky_noise.noise_type = sky_random.randi_range(0, 5)
+		sky_noise.fractal_type = sky_random.randi_range(0, 3)
+		sky_noise.cellular_return_type = sky_random.randi_range(0, 6)
+		sky_noise.cellular_distance_function = sky_random.randi_range(0, 3)
+		sky_noise.domain_warp_enabled = bool(sky_random.randi_range(0, 1))
+		sky_noise.domain_warp_fractal_type = sky_random.randi_range(0, 2)
+		sky_noise.cellular_jitter = sky_random.randf_range(0.0, 3.0)
+		sky_noise.domain_warp_amplitude = sky_random.randf_range(0, 60)
+		sky_noise.domain_warp_fractal_gain = sky_random.randf_range(0.0, 2.0)
+		sky_noise.domain_warp_fractal_lacunarity = sky_random.randf_range(0.0, 15.0)
+		sky_noise.domain_warp_fractal_octaves = sky_random.randi_range(0, 5)
+		sky_noise.domain_warp_frequency = sky_random.randf_range(0.0, 0.5)
+		sky_noise.fractal_gain = sky_random.randf_range(0.0, 2.0)
+		sky_noise.fractal_lacunarity = sky_random.randf_range(0.0, 4.0)
+		sky_noise.fractal_octaves = sky_random.randi_range(0, 5)
+		sky_noise.fractal_ping_pong_strength = sky_random.randf_range(0.0, 4.0)
+		sky_noise.fractal_weighted_strength = sky_random.randf_range(0.0, 2.0)
+		sky_noise.frequency = sky_random.randf_range(0.001, 0.05)
+		sky_noise_texture.width = 256
+		sky_noise_texture.height = 256
+		sky_noise_texture.noise = sky_noise
+		await sky_noise_texture.changed
+		SOGlobal.sky_material.set_shader_parameter("sky_texture", sky_noise_texture)
 	if !theme or theme.fog_density < 0:
 		world_environment.environment.fog_density = sky_random.randf_range(0.0005, 0.01)
 	if SOGlobal.compat_renderer:

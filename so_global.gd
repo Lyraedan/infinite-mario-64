@@ -230,21 +230,25 @@ func _generate_theme_textures() -> void:
 			"albedo": "%s/course_01_bobomb_battlefield/tex_37_103_32x32.png" % ST,
 			"side": "%s/course_01_bobomb_battlefield/tex_70_37_32x32.png" % ST,
 			"slope": "%s/course_01_bobomb_battlefield/tex_37_3_32x32.png" % ST,
+			"background": "%s/backgrounds/tex_3_3_256x256.png" % ST,
 		},
 		LevelTheme.ThemeID.THWOMP_FORTRESS: {
 			"albedo": "%s/course_02_whomp_fortress/tex_36_36_32x32.png" % ST,
 			"side": "%s/course_02_whomp_fortress/tex_206_38_32x32.png" % ST,
 			"slope": "%s/course_02_whomp_fortress/tex_137_70_32x32.png" % ST,
+			"background": "%s/backgrounds/tex_3_3_256x256.png" % ST,
 		},
 		LevelTheme.ThemeID.SNOW_LAND: {
 			"albedo": "%s/course_04_cool_cool_mountain/tex_105_3_32x32.png" % ST,
 			"side": "%s/course_04_cool_cool_mountain/tex_37_135_32x32.png" % ST,
 			"slope": "%s/course_04_cool_cool_mountain/tex_104_71_32x32.png" % ST,
+			"background": "%s/backgrounds/tex_780_3_256x256.png" % ST,
 		},
 		LevelTheme.ThemeID.LAVA_FIRE_SEA: {
 			"albedo": "%s/course_07_lethal_lava_land/tex_139_37_32x32.png" % ST,
 			"side": "%s/course_07_lethal_lava_land/tex_3_309_32x32.png" % ST,
 			"slope": "%s/course_07_lethal_lava_land/tex_37_309_32x32.png" % ST,
+			"background": "%s/backgrounds/tex_262_262_256x165.png" % ST,
 		},
 	}
 
@@ -259,7 +263,10 @@ func _generate_theme_textures() -> void:
 			side_tex = load("res://mario/debug_floor.png")
 		if not slope_tex:
 			slope_tex = load("res://mario/debug_floor_slope.png")
-		theme_textures_cache[theme_id] = { "albedo": albedo_tex, "side": side_tex, "slope": slope_tex }
+		var bg_tex: Texture2D = null
+		if data.has("background"):
+			bg_tex = _load_runtime_texture(data["background"])
+		theme_textures_cache[theme_id] = { "albedo": albedo_tex, "side": side_tex, "slope": slope_tex, "background": bg_tex }
 
 	water_texture = _load_runtime_texture("%s/peach_castle_courtyard/tex_71_105_32x32.png" % ST)
 	if not water_texture:
