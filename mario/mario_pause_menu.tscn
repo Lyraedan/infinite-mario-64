@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://bdc07kwcxglgb"]
+[gd_scene format=3 uid="uid://bdc07kwcxglgb"]
 
-[ext_resource type="Script" path="res://mario/mario_pause_menu.gd" id="1_muu6i"]
+[ext_resource type="Script" uid="uid://covsa610kemgy" path="res://mario/mario_pause_menu.gd" id="1_muu6i"]
 [ext_resource type="FontFile" uid="uid://c25d003g01x4h" path="res://mario/Mario64.ttf" id="1_mvtme"]
 [ext_resource type="AudioStream" uid="uid://vuyuw4rpqy3a" path="res://mario/sfx/sm64_pause.wav" id="2_28vdd"]
 
@@ -47,7 +47,7 @@ font_color = Color(0.2, 0.2, 0.2, 1)
 font = ExtResource("1_mvtme")
 font_size = 24
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=1528118940]
 z_index = 1
 layout_mode = 3
 anchors_preset = 15
@@ -57,7 +57,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_muu6i")
 
-[node name="RestartRequest" type="Label" parent="."]
+[node name="RestartRequest" type="Label" parent="." unique_id=2078296523]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.022
@@ -74,12 +74,12 @@ text = "* Some changed settings require a restart."
 label_settings = SubResource("LabelSettings_s8vbx")
 horizontal_alignment = 1
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=682863324]
 stream = ExtResource("2_28vdd")
 volume_db = -10.0
 autoplay = true
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=1918337706]
 layout_mode = 1
 anchor_left = 0.312
 anchor_top = 0.333
@@ -92,7 +92,7 @@ offset_bottom = -10.24
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=55937906]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -101,7 +101,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
-[node name="Control" type="Control" parent="Control/ColorRect"]
+[node name="Control" type="Control" parent="Control/ColorRect" unique_id=674215181]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,7 +113,7 @@ offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LabelContainer" type="VBoxContainer" parent="Control"]
+[node name="LabelContainer" type="VBoxContainer" parent="Control" unique_id=1184563121]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.071
@@ -125,49 +125,49 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
 
-[node name="ResumeLabel" type="Label" parent="Control/LabelContainer"]
+[node name="ResumeLabel" type="Label" parent="Control/LabelContainer" unique_id=1338461077]
 layout_mode = 2
 text = "Resume"
 label_settings = SubResource("LabelSettings_5f5i0")
 horizontal_alignment = 1
 
-[node name="RespawnLabel" type="Label" parent="Control/LabelContainer"]
+[node name="RespawnLabel" type="Label" parent="Control/LabelContainer" unique_id=1150188532]
 layout_mode = 2
 text = "Retry"
 label_settings = SubResource("LabelSettings_pj5mv")
 horizontal_alignment = 1
 
-[node name="GenerateNewLevelLabel" type="Label" parent="Control/LabelContainer"]
+[node name="GenerateNewLevelLabel" type="Label" parent="Control/LabelContainer" unique_id=1126112402]
 layout_mode = 2
 text = "Generate Random New Level"
 label_settings = SubResource("LabelSettings_mdaqi")
 horizontal_alignment = 1
 
-[node name="ViewStageLabel" type="Label" parent="Control/LabelContainer"]
+[node name="ViewStageLabel" type="Label" parent="Control/LabelContainer" unique_id=1751406324]
 layout_mode = 2
 text = "View Level"
 label_settings = SubResource("LabelSettings_dear8")
 horizontal_alignment = 1
 
-[node name="HistoryLabel" type="Label" parent="Control/LabelContainer"]
+[node name="HistoryLabel" type="Label" parent="Control/LabelContainer" unique_id=1470998162]
 layout_mode = 2
 text = "History"
 label_settings = SubResource("LabelSettings_jv1yw")
 horizontal_alignment = 1
 
-[node name="SettingsLabel" type="Label" parent="Control/LabelContainer"]
+[node name="SettingsLabel" type="Label" parent="Control/LabelContainer" unique_id=1940922970]
 layout_mode = 2
 text = "Settings"
 label_settings = SubResource("LabelSettings_m44o7")
 horizontal_alignment = 1
 
-[node name="ExitLabel" type="Label" parent="Control/LabelContainer"]
+[node name="ExitLabel" type="Label" parent="Control/LabelContainer" unique_id=115302902]
 layout_mode = 2
 text = "Exit"
 label_settings = SubResource("LabelSettings_vc0ji")
 horizontal_alignment = 1
 
-[node name="StatDisplay" type="Control" parent="Control"]
+[node name="StatDisplay" type="Control" parent="Control" unique_id=340997893]
 layout_mode = 1
 anchor_top = 0.895
 anchor_right = 1.0
@@ -177,7 +177,7 @@ offset_bottom = 0.222076
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/StatDisplay"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/StatDisplay" unique_id=674320812]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -190,50 +190,43 @@ grow_vertical = 2
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="StarCounter" type="Label" parent="Control/StatDisplay/HBoxContainer"]
+[node name="StarCounter" type="Label" parent="Control/StatDisplay/HBoxContainer" unique_id=178360736]
 layout_mode = 2
 size_flags_vertical = 1
 text = "* x 47"
 label_settings = SubResource("LabelSettings_6w4g4")
 
-[node name="CoinCounter" type="Label" parent="Control/StatDisplay/HBoxContainer"]
+[node name="CoinCounter" type="Label" parent="Control/StatDisplay/HBoxContainer" unique_id=1836503482]
 layout_mode = 2
 size_flags_vertical = 1
 text = "$ x 5,493"
 label_settings = SubResource("LabelSettings_6w4g4")
 
-[node name="GeneratePrompt" type="Control" parent="."]
+[node name="GeneratePrompt" type="Control" parent="." unique_id=309698940]
 layout_mode = 1
 anchor_left = 0.312
 anchor_top = 0.68
 anchor_right = 0.687
 anchor_bottom = 0.717
 
-[node name="ThemeLabel" type="Label" parent="GeneratePrompt"]
+[node name="ThemeLabel" type="Label" parent="GeneratePrompt" unique_id=1543384312]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0
 anchor_top = 1.05
 anchor_right = 1.0
 anchor_bottom = 1.35
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
+offset_left = -1.3600141
+offset_top = 19.428003
+offset_right = -1.3600769
+offset_bottom = 35.43601
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_mvtme")
 theme_override_font_sizes/font_size = 20
 text = "Theme: Infinite Mario 64"
 horizontal_alignment = 1
-offset_left = 1.27997
-offset_top = -0.160034
-offset_right = 1.27991
-offset_bottom = 0.520996
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="GeneratePrompt"]
+[node name="ColorRect" type="ColorRect" parent="GeneratePrompt" unique_id=1241039281]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -244,7 +237,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GeneratePrompt/ColorRect"]
+[node name="HBoxContainer" type="HBoxContainer" parent="GeneratePrompt/ColorRect" unique_id=1407424250]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -252,14 +245,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SeedButton" type="Button" parent="GeneratePrompt/ColorRect/HBoxContainer"]
+[node name="SeedButton" type="Button" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=310019380]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_mvtme")
 theme_override_font_sizes/font_size = 24
 text = "  Generate  From  Seed"
 flat = true
 
-[node name="SeedText" type="LineEdit" parent="GeneratePrompt/ColorRect/HBoxContainer"]
+[node name="SeedText" type="LineEdit" parent="GeneratePrompt/ColorRect/HBoxContainer" unique_id=2035957743]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("1_mvtme")

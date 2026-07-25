@@ -4,7 +4,7 @@
 
 [sub_resource type="Gradient" id="Gradient_block"]
 offsets = PackedFloat32Array(0, 0.15, 0.3, 0.5, 0.7, 0.85, 1)
-colors = PackedColorArray(0.4, 0.12, 0.04, 1, 0.55, 0.2, 0.06, 1, 0.7, 0.3, 0.08, 1, 0.8, 0.4, 0.12, 1, 0.9, 0.5, 0.15, 1, 0.6, 0.25, 0.08, 1, 0.35, 0.1, 0.03, 1)
+colors = PackedColorArray(0.4, 0.4, 0.4, 1, 0.55, 0.55, 0.55, 1, 0.65, 0.65, 0.65, 1, 0.75, 0.75, 0.75, 1, 0.9, 0.9, 0.9, 1, 0.65, 0.65, 0.65, 1, 0.4, 0.4, 0.4, 1)
 
 [sub_resource type="Gradient" id="Gradient_sky"]
 offsets = PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1)
