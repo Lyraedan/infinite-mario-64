@@ -202,26 +202,62 @@ func load_themes() -> void:
 		if theme:
 			theme_list.append(theme)
 
+func _load_runtime_texture(path: String) -> Texture2D:
+	var tex: Texture2D = ResourceLoader.load(path)
+	if tex:
+		return tex
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file:
+		var img := Image.new()
+		if img.load_png_from_buffer(file.get_buffer(file.get_length())) == OK:
+			return ImageTexture.create_from_image(img)
+	return null
+
 func _generate_theme_textures() -> void:
 	theme_textures_cache.clear()
 
-	var theme_names: Dictionary = {
-		LevelTheme.ThemeID.DEFAULT: "default",
-		LevelTheme.ThemeID.BOBOMB_BATTLEFIELD: "bobomb",
-		LevelTheme.ThemeID.THWOMP_FORTRESS: "thwomp",
-		LevelTheme.ThemeID.SNOW_LAND: "snow",
-		LevelTheme.ThemeID.LAVA_FIRE_SEA: "lava",
+	const ST = "res://streamingassets/sm64_textures"
+
+	var theme_data: Dictionary = {
+		LevelTheme.ThemeID.DEFAULT: {
+			"albedo": "res://mario/debug_floor.png",
+			"side": "res://mario/debug_floor.png",
+			"slope": "res://mario/debug_floor_slope.png",
+		},
+		LevelTheme.ThemeID.BOBOMB_BATTLEFIELD: {
+			"albedo": "%s/course_01_bobomb_battlefield/tex_37_103_32x32.png" % ST,
+			"side": "%s/course_01_bobomb_battlefield/tex_70_37_32x32.png" % ST,
+			"slope": "%s/course_01_bobomb_battlefield/tex_37_3_32x32.png" % ST,
+		},
+		LevelTheme.ThemeID.THWOMP_FORTRESS: {
+			"albedo": "%s/course_02_whomp_fortress/tex_2_102_32x32.png" % ST,
+			"side": "%s/course_02_whomp_fortress/tex_206_20_32x16.png" % ST,
+			"slope": "%s/course_02_whomp_fortress/tex_103_104_32x32.png" % ST,
+		},
+		LevelTheme.ThemeID.SNOW_LAND: {
+			"albedo": "%s/course_04_cool_cool_mountain/tex_105_3_32x32.png" % ST,
+			"side": "%s/course_04_cool_cool_mountain/tex_37_135_32x32.png" % ST,
+			"slope": "%s/course_04_cool_cool_mountain/tex_104_71_32x32.png" % ST,
+		},
+		LevelTheme.ThemeID.LAVA_FIRE_SEA: {
+			"albedo": "%s/course_07_lethal_lava_land/tex_139_37_32x32.png" % ST,
+			"side": "%s/course_07_lethal_lava_land/tex_3_309_32x32.png" % ST,
+			"slope": "%s/course_07_lethal_lava_land/tex_37_309_32x32.png" % ST,
+		},
 	}
 
-	for theme_id in theme_names:
-		var name: String = theme_names[theme_id]
-		var albedo_tex: Texture2D = load("res://mario/theme_textures/%s_albedo.png" % name)
-		var slope_tex: Texture2D = load("res://mario/theme_textures/%s_slope.png" % name)
+	for theme_id in theme_data:
+		var data: Dictionary = theme_data[theme_id]
+		var albedo_tex: Texture2D = _load_runtime_texture(data["albedo"])
+		var side_tex: Texture2D = _load_runtime_texture(data["side"])
+		var slope_tex: Texture2D = _load_runtime_texture(data["slope"])
 		if not albedo_tex:
 			albedo_tex = load("res://mario/debug_floor.png")
+		if not side_tex:
+			side_tex = load("res://mario/debug_floor.png")
 		if not slope_tex:
 			slope_tex = load("res://mario/debug_floor_slope.png")
-		theme_textures_cache[theme_id] = { "albedo": albedo_tex, "slope": slope_tex }
+		theme_textures_cache[theme_id] = { "albedo": albedo_tex, "side": side_tex, "slope": slope_tex }
 
 
 # save block structure:

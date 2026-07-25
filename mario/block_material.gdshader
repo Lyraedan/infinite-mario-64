@@ -3,8 +3,10 @@ shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_disabled,skip_vertex_transform;
 
 uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
+uniform sampler2D side_texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
 uniform sampler2D slope_texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
 uniform sampler2D texture_gradient : source_color,filter_linear_mipmap,repeat_enable;
+uniform bool apply_hue_shift;
 uniform vec3 color_multiply;
 uniform float outer_time;
 instance uniform float fade_in;
@@ -160,17 +162,30 @@ void fragment() {
 	vec3 xy_tex = texture(texture_albedo, UVZ).rgb;
 	vec3 yz_tex = texture(texture_albedo, UVX).rgb;
 	vec3 zx_tex = texture(texture_albedo, UVY).rgb;
+	vec3 xy_side_tex = texture(side_texture_albedo, UVZ).rgb;
+	vec3 yz_side_tex = texture(side_texture_albedo, UVX).rgb;
+	vec3 zx_side_tex = texture(side_texture_albedo, UVY).rgb;
 	vec3 xy_slope_tex = texture(slope_texture_albedo, UVZ).rgb;
 	vec3 yz_slope_tex = texture(slope_texture_albedo, UVX).rgb;
 	vec3 zx_slope_tex = texture(slope_texture_albedo, UVY).rgb;
 	vec3 gradient_color = texture(texture_gradient, vec2(sample_pos, 0)).rgb;
 	vec3 final_texture_color = mix(mix(xy_tex, yz_tex, x_factor), zx_tex, y_factor);
+	vec3 final_side_texture_color = mix(mix(xy_side_tex, yz_side_tex, x_factor), zx_side_tex, y_factor);
 	vec3 final_slope_texture_color = mix(mix(xy_slope_tex, yz_slope_tex, x_factor), zx_slope_tex, y_factor);
-	if (use_normal.y > 0.0 && use_normal.y < 0.99){
-		vec3 hsv = rgb2hsv(gradient_color);
-		hsv += vec3(0.5, 0.0, 0.0);
-		hsv.z = 1.0 - hsv.z;
-		gradient_color = hsv2rgb(hsv);
+	if (use_normal.y > 0.99){
+		if (FRONT_FACING){
+			ALBEDO = final_texture_color * gradient_color;
+		}else{
+			ALBEDO = final_texture_color * gradient_color * 0.1;
+			SPECULAR = 0.0;
+		}
+	}else if (use_normal.y > 0.0){
+		if (apply_hue_shift){
+			vec3 hsv = rgb2hsv(gradient_color);
+			hsv += vec3(0.5, 0.0, 0.0);
+			hsv.z = 1.0 - hsv.z;
+			gradient_color = hsv2rgb(hsv);
+		}
 		if (FRONT_FACING){
 			ALBEDO = final_slope_texture_color * gradient_color;
 		}else{
@@ -179,9 +194,9 @@ void fragment() {
 		}
 	}else{
 		if (FRONT_FACING){
-			ALBEDO = final_texture_color * gradient_color;
+			ALBEDO = final_side_texture_color * gradient_color;
 		}else{
-			ALBEDO = final_texture_color * gradient_color * 0.1;
+			ALBEDO = final_side_texture_color * gradient_color * 0.1;
 			SPECULAR = 0.0;
 		}
 	}

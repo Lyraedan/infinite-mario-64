@@ -590,7 +590,9 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 		var texs = SOGlobal.theme_textures_cache.get(theme.theme_id)
 		if texs:
 			SOGlobal.block_material.set_shader_parameter("texture_albedo", texs["albedo"])
+			SOGlobal.block_material.set_shader_parameter("side_texture_albedo", texs["side"])
 			SOGlobal.block_material.set_shader_parameter("slope_texture_albedo", texs["slope"])
+			SOGlobal.block_material.set_shader_parameter("apply_hue_shift", theme.theme_id == LevelTheme.ThemeID.DEFAULT)
 
 	_generate_random_level(useSeed)
 
