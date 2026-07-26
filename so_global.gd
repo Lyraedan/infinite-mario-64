@@ -401,18 +401,10 @@ func _ready():
 
 var unfocused := false
 var _tree_climbing := false
-var _tree_climb_y := 0.0
 var _tree_pos := Vector3.ZERO
-var _tree_face_angle := 0.0
-var _climb_anim_frame := 0.0
 
-const CLIMB_SPEED := 4.0
-const CLIMB_ANIM_FRAMES := 30.0
-const CLIMB_ANIM_SPEED := 20.0
 const GRAB_DIST := 2.25
 const RELEASE_DIST := 3.5
-const MARIO_ANIM_CLIMB_UP_POLE := 5
-const MARIO_ANIM_IDLE_ON_POLE := 13
 
 func _process(delta):
 	if not current_mario or not is_instance_valid(current_mario):
@@ -443,56 +435,26 @@ func _process(delta):
 		if h_dist < GRAB_DIST and mario_pos.y > tree_pos.y - 1.0 and mario_pos.y < tree_pos.y + 6.5 and Input.is_action_just_pressed(&"mario_a"):
 			_tree_climbing = true
 			_tree_pos = tree_pos
-			_tree_climb_y = mario_pos.y
-			_tree_face_angle = atan2(tree_pos.x - mario_pos.x, tree_pos.z - mario_pos.z)
+			LibSM64.set_mario_position(mario.id, tree_pos)
+			LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
+			LibSM64.set_mario_forward_velocity(mario.id, 0.0)
+			LibSM64.set_mario_action(mario.id, LibSM64.ACT_HOLDING_POLE)
 
 	if _tree_climbing:
 		if Input.is_action_just_pressed(&"mario_b"):
 			_tree_climbing = false
 			LibSM64.set_mario_velocity(mario.id, Vector3(0, 8, 0))
+			LibSM64.set_mario_action(mario.id, LibSM64.ACT_FREEFALL)
 			return
-
-		var stick_y := Input.get_axis(&"mario_stick_down", &"mario_stick_up")
-		_tree_climb_y += stick_y * CLIMB_SPEED * delta
-
-		var min_y: float = tree_pos.y - 0.5
-		var max_y: float = tree_pos.y + 5.5
-		if _tree_climb_y > max_y:
-			_tree_climb_y = max_y
-		if _tree_climb_y < min_y:
-			_tree_climbing = false
-			var release_pos := Vector3(_tree_pos.x, min_y, _tree_pos.z)
-			LibSM64.set_mario_position(mario.id, release_pos)
-			LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
-			return
-
-		var new_pos: Vector3 = mario_pos
-		new_pos.x = _tree_pos.x
-		new_pos.z = _tree_pos.z
-		new_pos.y = _tree_climb_y
-		LibSM64.set_mario_position(mario.id, new_pos)
-		LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
-		LibSM64.set_mario_forward_velocity(mario.id, 0.0)
-
-		LibSM64.set_mario_face_angle(mario.id, _tree_face_angle)
-
-		var anim_id := MARIO_ANIM_IDLE_ON_POLE
-		if stick_y > 0.1:
-			anim_id = MARIO_ANIM_CLIMB_UP_POLE
-			_climb_anim_frame += stick_y * CLIMB_ANIM_SPEED * delta
-			if _climb_anim_frame >= CLIMB_ANIM_FRAMES:
-				_climb_anim_frame -= CLIMB_ANIM_FRAMES
-		elif stick_y < -0.1:
-			anim_id = MARIO_ANIM_CLIMB_UP_POLE
-			_climb_anim_frame -= absf(stick_y) * CLIMB_ANIM_SPEED * delta
-			if _climb_anim_frame < 0:
-				_climb_anim_frame += CLIMB_ANIM_FRAMES
-		else:
-			_climb_anim_frame = 0.0
-		LibSM64.set_mario_animation(mario.id, anim_id)
-		LibSM64.set_mario_anim_frame(mario.id, int(_climb_anim_frame))
 
 		if h_dist > RELEASE_DIST:
+			_tree_climbing = false
+			return
+
+		var action = mario.action
+		if action != LibSM64.ACT_HOLDING_POLE and action != LibSM64.ACT_CLIMBING_POLE \
+				and action != LibSM64.ACT_GRAB_POLE_SLOW and action != LibSM64.ACT_GRAB_POLE_FAST \
+				and action != LibSM64.ACT_TOP_OF_POLE_TRANSITION and action != LibSM64.ACT_TOP_OF_POLE:
 			_tree_climbing = false
 
 func _notification(what):
