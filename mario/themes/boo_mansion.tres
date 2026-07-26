@@ -16,3 +16,6 @@ fog_color = Color(0.16701236, 7.9548096e-05, 0.21071029, 1)
 ambient_color = Color(0.25852236, 3.151361e-05, 0.24559134, 1)
 light_color = Color(0.34479606, 1.5931279e-05, 0.2784031, 1)
 background_music_path = "res://streamingassets/sm64_music/1-12 Haunted House.mp3"
+tree_enabled = true
+tree_count_min = 1
+tree_count_max = 4

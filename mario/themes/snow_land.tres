@@ -44,3 +44,6 @@ slope_chance_east = 0.5
 slope_chance_south = 0.5
 slope_chance_west = 0.5
 max_slope = 5
+tree_enabled = true
+tree_count_min = 3
+tree_count_max = 7

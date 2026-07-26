@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpcg8lijkgwe"
-path.s3tc="res://.godot/imported/tex_37_70_32x64.png-77601a42bcde9a8f02f9399fd07a73c7.s3tc.ctex"
-path.etc2="res://.godot/imported/tex_37_70_32x64.png-77601a42bcde9a8f02f9399fd07a73c7.etc2.ctex"
+uid="uid://c54uf1126ov3w"
+path.s3tc="res://.godot/imported/tex_70_70_32x64_transparent.png-50feed472d4426d39b03fdf8b14dfc73.s3tc.ctex"
+path.etc2="res://.godot/imported/tex_70_70_32x64_transparent.png-50feed472d4426d39b03fdf8b14dfc73.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://streamingassets/sm64_textures/castle_grounds/tex_37_70_32x64.png"
-dest_files=["res://.godot/imported/tex_37_70_32x64.png-77601a42bcde9a8f02f9399fd07a73c7.s3tc.ctex", "res://.godot/imported/tex_37_70_32x64.png-77601a42bcde9a8f02f9399fd07a73c7.etc2.ctex"]
+source_file="res://streamingassets/sm64_textures/castle_grounds/tex_70_70_32x64_transparent.png"
+dest_files=["res://.godot/imported/tex_70_70_32x64_transparent.png-50feed472d4426d39b03fdf8b14dfc73.s3tc.ctex", "res://.godot/imported/tex_70_70_32x64_transparent.png-50feed472d4426d39b03fdf8b14dfc73.etc2.ctex"]
 
 [params]
 

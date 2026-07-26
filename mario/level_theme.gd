@@ -58,3 +58,7 @@ const THEME_COUNT: int = 5
 @export var mirror_chance_mult: float = 1.0
 @export var moving_block_chance_mult: float = 1.0
 @export var coin_density_mult: float = 1.0
+
+@export var tree_enabled: bool = false
+@export var tree_count_min: int = -1
+@export var tree_count_max: int = -1

@@ -161,6 +161,7 @@ func _generate_random_level(useSeed) -> void:
 	var max_west_slope = root_random.randi_range(1, max(max_slope_val, 1))
 	var should_generate_cork_star : bool = root_random.randf() > 0.8
 	var corks : Array[CorkBox] = []
+	var _tree_candidates: Array[Dictionary] = []
 	for i in range(iter):
 		level_root_position_table.append(level_gen_source)
 		level_gen_source_velocity += root_random_iterational.randf_range(min_velocity_change, max_velocity_change)
@@ -222,6 +223,8 @@ func _generate_random_level(useSeed) -> void:
 			if slope_random.randf() < west_slope_chance:
 				cur_w_slope = slope_random.randi_range(0, max_west_slope)
 			new_block = SOGlobal.generate_block_from_pos_and_size(block_pos, block_size, cur_n_slope, cur_e_slope, cur_s_slope, cur_w_slope) as LevelBlock
+			if cur_n_slope == 0 and cur_e_slope == 0 and cur_s_slope == 0 and cur_w_slope == 0:
+				_tree_candidates.append({"pos": block_pos + Vector3(0, block_size.y * 0.5, 0)})
 			#new_block.basis = new_block.basis.rotated(Vector3.UP, deg_to_rad(ang_deg))
 			#new_block._update_transform()
 
@@ -310,6 +313,8 @@ func _generate_random_level(useSeed) -> void:
 				new_block.position += Vector3(0, vertical_offset * 0.5, 0)
 				new_block.start_position += Vector3(0, vertical_offset * 0.5, 0)
 				new_block._change_block_move_mode(LevelBlock.move_type.ROTATE_REPEAT)
+			if _tree_candidates.size() > 0:
+				_tree_candidates[_tree_candidates.size() - 1]["moving"] = is_moving
 			var num_surface_blocks_to_gen : int = floor(top_random.randi_range(min_surface_blocks_per_4x4, max_surface_blocks_per_4x4) * (top_area / 16))
 			for b in range(num_surface_blocks_to_gen):
 				if top_random.randf_range(0, 1) < top_random.randf_range(min_surface_block_chance, max_surface_block_chance):
@@ -444,26 +449,40 @@ func _generate_random_level(useSeed) -> void:
 
 		level_gen_source += Vector3(0, vertical_vel, level_gen_source_velocity).rotated(Vector3(0, 1, 0), deg_to_rad(ang_deg))
 
+	if theme and theme.tree_enabled and _tree_candidates.size() > 0:
+		var tree_count_min = theme.tree_count_min if theme.tree_count_min >= 0 else 2
+		var tree_count_max = theme.tree_count_max if theme.tree_count_max >= 0 else 6
+		var desired = baseblock_random.randi_range(tree_count_min, tree_count_max)
+		var valid = []
+		for c in _tree_candidates:
+			if not c.get("moving", false):
+				valid.append(c["pos"])
+		valid.shuffle()
+		var placed = 0
+		for pos in valid:
+			if placed >= desired:
+				break
+			if not SOGlobal.is_tree_position_blocked(pos):
+				SOGlobal.generate_tree_at_pos(pos)
+				placed += 1
+
 	var pool_random = RandomNumberGenerator.new()
 	pool_random.seed = apple_seed.randi()
 	var use_lava_pools: bool = theme and theme.theme_id == LevelTheme.ThemeID.LAVA_FIRE_SEA
-	var pool_tex: Texture2D = SOGlobal.lava_texture if use_lava_pools else SOGlobal.water_texture
 	var num_pools: int = pool_random.randi_range(2, 4)
-	for p in range(num_pools):
-		var idx: int = pool_random.randi_range(0, level_root_position_table.size() - 1)
-		var pool_center: Vector3 = level_root_position_table[idx]
-		var pool_size: int = pool_random.randi_range(2, 3)
-		for dx in range(pool_size):
-			for dz in range(pool_size):
-				var pool_pos: Vector3 = snapped(pool_center + Vector3(dx, 0, dz), Vector3.ONE)
-				var pool_block := SOGlobal.generate_block_from_pos_and_size(pool_pos, Vector3(1, 1, 1))
-				pool_block.set_instance_shader_parameter("texture_albedo", pool_tex)
-				pool_block.set_instance_shader_parameter("side_texture_albedo", pool_tex)
-				pool_block.set_instance_shader_parameter("slope_texture_albedo", pool_tex)
-				for child in pool_block.get_children():
-					if child is LibSM64SurfacePropertiesComponent:
-						child.surface_properties.surface_type = 0
-						break
+	
+	for i in range(num_pools):
+		var idx = pool_random.randi_range(0, level_root_position_table.size() - 1)
+		var center = level_root_position_table[idx]
+
+		generate_pool(
+			pool_random,
+			center,
+			use_lava_pools,
+			10,   # minimum tiles
+			50,   # maximum tiles
+			15     # maximum radius
+		)
 
 	await get_tree().create_timer(0.02).timeout
 	var coin_density_mult: float = 1.0
@@ -566,6 +585,60 @@ func _generate_random_level(useSeed) -> void:
 		corks[which_cork].contained_items = ["star"]
 		#print("GENERATED CORK STAR")
 		#DebugDraw3D.draw_sphere(corks[which_cork].position, 1.0, Color(1, 0, 0), 100)
+
+func generate_pool(rng: RandomNumberGenerator,center: Vector3,is_lava: bool,min_tiles := 8,max_tiles := 20,max_radius := 5) -> void:
+	var tex := SOGlobal.lava_texture if is_lava else SOGlobal.water_texture
+
+	var target_tiles := rng.randi_range(min_tiles, max_tiles)
+
+	var open: Array[Vector2i] = [Vector2i(0, 0)]
+	var visited := {}
+
+	while open.size() > 0 and visited.size() < target_tiles:
+
+		var current: Vector2i = open.pop_at(rng.randi_range(0, open.size() - 1))
+
+		if visited.has(current):
+			continue
+
+		if current.length() > max_radius:
+			continue
+
+		visited[current] = true
+
+		var world_pos := center + Vector3(current.x, 0, current.y)
+		
+		print("Pool generated at ", world_pos)
+		# Create liquid tile
+		var block := SOGlobal.generate_block_from_pos_and_size(
+			world_pos,
+			Vector3.ONE
+		)
+		# change block to water and lava texture
+		var pool_material := SOGlobal.block_material.duplicate()
+		pool_material.set_shader_parameter("texture_albedo", tex)
+		pool_material.set_shader_parameter("side_texture_albedo", tex)
+
+		block.material_override = pool_material
+
+		# Water/Lava surface
+		# TODO Make this water or lava
+
+		# Randomly expand
+		var dirs = [
+			Vector2i.LEFT,
+			Vector2i.RIGHT,
+			Vector2i.UP,
+			Vector2i.DOWN
+		]
+
+		dirs.shuffle()
+
+		for dir in dirs:
+			if rng.randf() < 0.75:
+				var next: Vector2i = current + dir
+				if !visited.has(next):
+					open.append(next)
 
 var _is_libsm64_init := false
 

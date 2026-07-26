@@ -45,3 +45,6 @@ slope_chance_south = 0.2
 slope_chance_west = 0.2
 max_slope = 3
 coin_density_mult = 0.7
+tree_enabled = true
+tree_count_min = 2
+tree_count_max = 5
