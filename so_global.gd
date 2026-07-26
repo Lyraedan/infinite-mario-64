@@ -481,9 +481,9 @@ func _process(delta):
 			or mario.action == LibSM64.ACT_WALL_KICK_AIR
 		)
 		
-		var t = LibSM64.ACT_HOLDING_POLE # HOLDING POLE ACTION
+		var facing_tree = (mario.global_transform.basis.z.normalized().dot((tree_pos - mario_pos).normalized()) < -0.5)
 
-		if can_grab and (Input.is_action_just_pressed(&"mario_a") or airborne):
+		if can_grab and facing_tree and (Input.is_action_just_pressed(&"mario_a") or airborne):
 
 			var snap_pos = Vector3(
 				tree_pos.x,
@@ -494,6 +494,7 @@ func _process(delta):
 			LibSM64.set_mario_position(mario.id, snap_pos)
 			LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
 			LibSM64.set_mario_forward_velocity(mario.id, 0.0)
+			LibSM64.set_mario_action(mario.id, LibSM64.ACT_HOLDING_POLE)
 
 			var pole_handle = nearest_tree.get_node("TreeStaticBody").get_meta("pole_handle")
 			LibSM64.mario_attach_to_pole(mario.id, pole_handle, false)
@@ -514,8 +515,9 @@ func _process(delta):
 		else:
 			# Normal pole release
 
-			# Direction away from tree
-			var away = mario.position - tree_pos
+			# Direction opposite to the way Mario is facing
+			var forward = mario.global_transform.basis.z
+			var away = -forward
 			away.y = 0.0
 
 			if away.length_squared() > 0.001:
