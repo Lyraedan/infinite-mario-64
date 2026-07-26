@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://d3388702bbbba"]
 
+[ext_resource type="Script" uid="uid://b40p0ecewd30r" path="res://mario/pole.gd" id="1_gtly3"]
 [ext_resource type="Texture2D" uid="uid://dhbhniwlor2eu" path="res://streamingassets/sm64_textures/castle_grounds/tex_37_70_32x64_transparent.png" id="1_left"]
 [ext_resource type="Texture2D" uid="uid://c54uf1126ov3w" path="res://streamingassets/sm64_textures/castle_grounds/tex_70_70_32x64_transparent.png" id="2_right"]
 
 [node name="Tree" type="Node3D" unique_id=1882290626]
+script = ExtResource("1_gtly3")
 
 [node name="LeftQuad" type="Sprite3D" parent="." unique_id=404858453]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)

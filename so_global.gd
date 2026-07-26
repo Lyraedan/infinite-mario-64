@@ -409,49 +409,39 @@ func _ready():
 
 
 var unfocused := false
-var _tree_climbing := false
-var _tree_pos := Vector3.ZERO
-
-const GRAB_DIST := 2.25
-const RELEASE_DIST := 3.5
+var _pole_climbing := false
+var _pole_pos := Vector3.ZERO
 
 func _process(delta):
 	if not current_mario or not is_instance_valid(current_mario):
-		_tree_climbing = false
+		_pole_climbing = false
 		return
-
+ 
 	if _grab_cooldown > 0.0:
 		_grab_cooldown -= delta
-
+ 
 	var mario = current_mario
 	if mario.id < 0:
 		return
-
+ 
 	var mario_pos = mario.position
-
-	var nearest_tree: Node3D = null
+ 
+	var nearest_tree: ClimbalePole = null
 	var nearest_dist := INF
-
-	for tree in get_tree().get_nodes_in_group("climbable_trees"):
+ 
+	for tree in get_tree().get_nodes_in_group("climbable_poles"):
 		if !is_instance_valid(tree):
 			continue
-
+ 
 		var dist = mario_pos.distance_squared_to(tree.position)
 		if dist < nearest_dist:
 			nearest_dist = dist
 			nearest_tree = tree
-
+ 
 	if nearest_tree == null or nearest_dist > 49.0:
-		_tree_climbing = false
+		_pole_climbing = false
 		return
-
-	var tree_pos = nearest_tree.position
-
-	var h_dist = Vector2(
-		mario_pos.x - tree_pos.x,
-		mario_pos.z - tree_pos.z
-	).length()
-
+ 
 	var on_pole = (
 		mario.action == LibSM64.ACT_HOLDING_POLE
 		or mario.action == LibSM64.ACT_CLIMBING_POLE
@@ -460,88 +450,56 @@ func _process(delta):
 		or mario.action == LibSM64.ACT_TOP_OF_POLE
 		or mario.action == LibSM64.ACT_TOP_OF_POLE_TRANSITION
 	)
-
-	_tree_climbing = on_pole
-
+ 
+	_pole_climbing = on_pole
+ 
 	# Grab tree
 	if !on_pole and _grab_cooldown <= 0.0:
-
-		var can_grab = (
-			h_dist < GRAB_DIST
-			and mario_pos.y > tree_pos.y - 1.0
-			and mario_pos.y < tree_pos.y + 6.5
-		)
-
-		var airborne = (
-			mario.action == LibSM64.ACT_JUMP
-			or mario.action == LibSM64.ACT_DOUBLE_JUMP
-			or mario.action == LibSM64.ACT_FREEFALL
-			or mario.action == LibSM64.ACT_SIDE_FLIP
-			or mario.action == LibSM64.ACT_LONG_JUMP
-			or mario.action == LibSM64.ACT_WALL_KICK_AIR
-		)
-		
-		var facing_tree = (mario.global_transform.basis.z.normalized().dot((tree_pos - mario_pos).normalized()) < -0.5)
-
-		if can_grab and facing_tree and (Input.is_action_just_pressed(&"mario_a") or airborne):
-
-			var snap_pos = Vector3(
-				tree_pos.x,
-				mario_pos.y,
-				tree_pos.z
-			)
-
-			LibSM64.set_mario_position(mario.id, snap_pos)
-			LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
-			LibSM64.set_mario_forward_velocity(mario.id, 0.0)
-			LibSM64.set_mario_action(mario.id, LibSM64.ACT_HOLDING_POLE)
-
-			var pole_handle = nearest_tree.get_node("TreeStaticBody").get_meta("pole_handle")
-			LibSM64.mario_attach_to_pole(mario.id, pole_handle, false)
-
+		nearest_tree.try_grab(mario)
+ 
 	# Jump off pole
 	if on_pole and Input.is_action_just_pressed(&"mario_a"):
-
+ 
 		_grab_cooldown = 0.35
-
+ 
 		if mario.action == LibSM64.ACT_TOP_OF_POLE \
 		or mario.action == LibSM64.ACT_TOP_OF_POLE_TRANSITION:
-
+ 
 			LibSM64.set_mario_action(
 				mario.id,
 				LibSM64.ACT_TOP_OF_POLE_JUMP
 			)
-
+ 
 		else:
 			# Normal pole release
-
+ 
 			# Direction opposite to the way Mario is facing
 			var forward = mario.global_transform.basis.z
 			var away = -forward
 			away.y = 0.0
-
+ 
 			if away.length_squared() > 0.001:
 				away = away.normalized()
-
+ 
 				# Face away from the tree
 				var yaw = atan2(away.x, away.z)
-
+ 
 				var rot = Quaternion(
 					Vector3.UP,
 					yaw
 				)
-
+ 
 				LibSM64.set_mario_angle(
 					mario.id,
 					rot
 				)
-
+ 
 			# SM64 pole jump values
 			LibSM64.set_mario_forward_velocity(
 				mario.id,
 				10.0
 			)
-
+ 
 			LibSM64.set_mario_action(
 				mario.id,
 				LibSM64.ACT_JUMP
