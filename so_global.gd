@@ -84,14 +84,23 @@ func generate_yellow_coin_at_pos(inPos : Vector3, in_drop_to_ground : bool = tru
 		new_coin._set_physics_enabled(true)
 	return new_coin
 
+func _on_tree_exiting(static_body: StaticBody3D):
+	var pole_handle = static_body.get_meta("pole_handle")
+	LibSM64.pole_destroy(pole_handle)
+
 func generate_tree_at_pos(inPos : Vector3) -> Node3D:
 	var new_tree = preload("res://mario/tree.tscn").instantiate() as Node3D
 	new_tree.position = inPos
 
 	var static_body = StaticBody3D.new()
+	static_body.name = "TreeStaticBody"
 	static_body.add_to_group("libsm64_surface_objects")
 	static_body.collision_layer = 0
 	static_body.collision_mask = 0
+	
+	var pole_handle = LibSM64.pole_create(inPos, 5.5, 0.0, 0.0, 0.0)
+	static_body.set_meta("pole_handle", pole_handle)
+	
 	var collision_shape = CollisionShape3D.new()
 	var box_shape = BoxShape3D.new()
 	box_shape.size = Vector3(1, 5.5, 1)
@@ -99,6 +108,8 @@ func generate_tree_at_pos(inPos : Vector3) -> Node3D:
 	collision_shape.position = Vector3(0, 1.75, 0)
 	static_body.add_child(collision_shape)
 	new_tree.add_child(static_body)
+	
+	new_tree.tree_exiting.connect(_on_tree_exiting.bind(static_body))
 
 	var surface_props_comp = LibSM64SurfacePropertiesComponent.new()
 	var surface_props = LibSM64SurfaceProperties.new()
@@ -438,8 +449,10 @@ func _process(delta):
 			LibSM64.set_mario_position(mario.id, tree_pos)
 			LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
 			LibSM64.set_mario_forward_velocity(mario.id, 0.0)
-			LibSM64.set_mario_used_obj(mario.id, tree_pos, 5.5)
-			LibSM64.set_mario_action(mario.id, LibSM64.ACT_HOLDING_POLE)
+			
+			var static_body = nearest_tree.get_node("TreeStaticBody")
+			var pole_handle = static_body.get_meta("pole_handle")
+			LibSM64.mario_attach_to_pole(mario.id, pole_handle, false)
 
 	if _tree_climbing:
 		if Input.is_action_just_pressed(&"mario_b"):
