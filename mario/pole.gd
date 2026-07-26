@@ -1,9 +1,10 @@
 extends Node3D
 class_name ClimbalePole
 
-const POLE_HEIGHT := 5.25
-const GRAB_DIST := 2.25
-const RELEASE_DIST := 3.5
+var POLE_HEIGHT : float = 5.25
+var GRAB_DIST : float = 2.25
+var RELEASE_DIST : float = 3.5
+var FAST_GRAB_SPEED_THRESHOLD : float = 10.0
 
 var pole_handle
 
@@ -38,17 +39,17 @@ func _on_tree_exiting() -> void:
 
 func try_grab(mario: LibSM64Mario) -> bool:
 	var mario_pos = mario.global_position # I was trying to use .position here but it'd always snap me to the bottom or top of the pole
-	var tree_pos = global_position
+	var pole_pos = global_position
 
 	var h_dist = Vector2(
-		mario_pos.x - tree_pos.x,
-		mario_pos.z - tree_pos.z
+		mario_pos.x - pole_pos.x,
+		mario_pos.z - pole_pos.z
 	).length()
 
 	var can_grab = (
 		h_dist < GRAB_DIST
-		and mario_pos.y > tree_pos.y - 1.0
-		and mario_pos.y < tree_pos.y + 6.5
+		and mario_pos.y > pole_pos.y - 1.0
+		and mario_pos.y < pole_pos.y + 6.5
 	)
 
 	var airborne = (
@@ -61,13 +62,15 @@ func try_grab(mario: LibSM64Mario) -> bool:
 	)
 
 	if can_grab and (Input.is_action_just_pressed(&"mario_a") or airborne):
-		var snap_pos = Vector3(tree_pos.x, mario_pos.y, tree_pos.z)
-
-		LibSM64.set_mario_position(mario.id, snap_pos)
+		var snap_pos = Vector3(pole_pos.x, mario_pos.y, pole_pos.z)
+		var fastGrab : bool = mario.velocity.length() > FAST_GRAB_SPEED_THRESHOLD
+		print(mario.velocity.length())
+		
 		LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
 		LibSM64.set_mario_forward_velocity(mario.id, 0.0)
+		LibSM64.set_mario_position(mario.id, snap_pos)
 		LibSM64.set_mario_action(mario.id, LibSM64.ACT_HOLDING_POLE)
-		LibSM64.mario_attach_to_pole(mario.id, pole_handle, false)
+		LibSM64.mario_attach_to_pole(mario.id, pole_handle, fastGrab)
 		return true
 
 	return false
