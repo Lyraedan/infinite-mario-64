@@ -678,6 +678,8 @@ func _create_mario_world(useSeed = str(randi())) -> void:
 				node.queue_free()
 			if node is CorkBox:
 				node.queue_free()
+			if node.is_in_group("climbable_trees"):
+				node.queue_free()
 		SOGlobal.level_meshes.clear()
 		LibSM64Global.terminate()
 
