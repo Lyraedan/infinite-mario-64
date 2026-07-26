@@ -102,7 +102,7 @@ func generate_tree_at_pos(inPos : Vector3) -> Node3D:
 
 	var surface_props_comp = LibSM64SurfacePropertiesComponent.new()
 	var surface_props = LibSM64SurfaceProperties.new()
-	surface_props.surface_type = LibSM64.SURFACE_TTM_VINES
+	surface_props.surface_type = LibSM64.SURFACE_INTANGIBLE
 	surface_props_comp.surface_properties = surface_props
 	static_body.add_child(surface_props_comp)
 
@@ -438,6 +438,7 @@ func _process(delta):
 			LibSM64.set_mario_position(mario.id, tree_pos)
 			LibSM64.set_mario_velocity(mario.id, Vector3.ZERO)
 			LibSM64.set_mario_forward_velocity(mario.id, 0.0)
+			LibSM64.set_mario_used_obj(mario.id, tree_pos, 5.5)
 			LibSM64.set_mario_action(mario.id, LibSM64.ACT_HOLDING_POLE)
 
 	if _tree_climbing:
